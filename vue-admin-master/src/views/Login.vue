@@ -65,7 +65,7 @@
                 this.$router.push({ path: '/table' });
               }
             });*/
-            this.$http.post("/services/plat/user/login",loginParams).then(res=>{
+            this.$http.post("/plat/user/login",loginParams).then(res=>{
               let data = res.data;
               if(data.success){
                   sessionStorage.setItem('user', JSON.stringify({"name":"张斌"}));

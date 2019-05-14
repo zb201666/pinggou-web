@@ -19,7 +19,9 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
-axios.defaults.baseURL = 'https://www.easy-mock.com/mock/5cd95ad4f13de80467c5be50/pinggou'  //easymock   baseUrl
+//axios.defaults.baseURL = 'https://www.easy-mock.com/mock/5cd95ad4f13de80467c5be50/pinggou'  //easymock   baseUrl
+//网关的路径
+axios.defaults.baseURL = 'http://localhost:9527/services'
 // 将API方法绑定到全局  /plat/login
 Vue.prototype.$http = axios
 Vue.config.productionTip = false

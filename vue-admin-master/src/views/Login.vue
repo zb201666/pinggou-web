@@ -23,7 +23,7 @@
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
+          account: 'zb',
           checkPass: '123456'
         },
         rules2: {

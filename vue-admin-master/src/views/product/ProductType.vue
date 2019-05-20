@@ -14,20 +14,40 @@
             <!--鼠标右键菜单栏，其实就是添加一个基于鼠标位置的模态框而已 -->
             <div v-show="menuVisible">
                 <ul id="menu" class="menu">
-                    <li class="menu__item" @click="addProductType">
+                    <li class="menuItem" @click="addProductType">
                         <i class="el-icon-circle-plus-outline"></i>添加
                     </li>
-                    <li class="menu__item" @click="editProductType">
+                    <li class="menuItem" @click="editProductType">
                         <i class="el-icon-edit"></i>编辑
                     </li>
-                    <li class="menu__item" @click="deleteProductType">
+                    <li class="menuItem" @click="deleteProductType">
                         <i class="el-icon-remove-outline"></i>删除
                     </li>
                 </ul>
             </div>
         </el-aside>
         <el-main>
-
+            <!--列表-->
+            <el-table :data="productType" border :header-cell-style="cellStyle" :cell-style="cellStyle" highlight-current-row v-loading="listLoading" style="width: 100%;">
+               <!-- <el-table-column type="selection" width="50">
+                </el-table-column>-->
+                <el-table-column type="index" width="50">
+                </el-table-column>
+                <el-table-column prop="name" label="名称" sortable>
+                </el-table-column>
+                <el-table-column prop="parent.name" label="父级菜单">
+                </el-table-column>
+                <el-table-column prop="path" label="路径">
+                </el-table-column>
+                <el-table-column prop="totalCount" label="商品数量" sortable>
+                </el-table-column>
+                <el-table-column prop="seoTitle" label="分类标题">
+                </el-table-column>
+                <el-table-column prop="seoKeywords" label="分类关键字">
+                </el-table-column>
+                <el-table-column prop="description" label="描述">
+                </el-table-column>
+            </el-table>
         </el-main>
     </el-container>
 
@@ -39,14 +59,20 @@
         data() {
             return {
                 menuVisible: false,
+                listLoading:false,
                 productTypes: [],
                 defaultProps: {
                     children: 'children',
                     label: 'name',
-                }
+                },
+                productType:null
             }
         },
         methods: {
+            //列表单元格样式
+            cellStyle({row,column,rowIndex,columnIndex}) {
+                return "text-align:center;color:#303133;font-size:14px;padding:7px 0px";
+            },
             //加载树形结构
             loadTree() {
                 this.$http.get("/product/productType/tree").then((res) => {
@@ -65,8 +91,13 @@
                 }
                 return arr;
             },
-            handleNodeClick() {
+            //点击事件
+            handleNodeClick(data,node,element) {
                 this.foo();
+                this.$http.get("/product/productType/"+data.id).then((res)=>{
+                    //this.productType = res.data;
+                    console.debug(res.data);
+                })
             },
             //右键事件
             rightClick(MouseEvent, object, Node, element) {
@@ -118,7 +149,7 @@
         border: 1px solid #ccc;
     }
 
-    .menu__item {
+    .menuItem {
         display: block;
         line-height: 20px;
         text-align: center;
@@ -132,6 +163,7 @@
         border-radius: 10px;
         border: 1px solid #999999;
         background-color: #f4f4f4;
+        padding-left: 0px;
     }
 
     li:hover {

@@ -10,18 +10,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Product.vue" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/views/product/Product.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="635">
-              <caret line="400" column="56" lean-forward="true" selection-start-line="400" selection-start-column="56" selection-end-line="400" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -32,26 +21,14 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getBrands</find>
-      <find>clearQuery</find>
-      <find>handleDel</find>
-      <find>alert()</find>
-      <find>alert</find>
-      <find>selsChange</find>
-      <find>sels</find>
-      <find>productTypes</find>
       <find>this.currentValue</find>
       <find>submitLoading</find>
       <find>getFirstLetter</find>
       <find>menu__item</find>
       <find>data</find>
       <find>brandRules</find>
-      <find>productTypeId</find>
-      <find>handleOutOfRange</find>
-      <find>handleUploadSeccess</find>
       <find>isUpload</find>
       <find>console</find>
-      <find>clearForm</find>
       <find>_this2.Brand</find>
       <find>productRules</find>
       <find>getproducts</find>
@@ -59,9 +36,21 @@
       <find>商品品牌</find>
       <find>handleCurrentChange</find>
       <find>getProducts</find>
-      <find>brandId</find>
       <find>clearproduct</find>
       <find>logoList</find>
+      <find>logoFile</find>
+      <find>mediasFile</find>
+      <find>mediasList</find>
+      <find>handleLogoRemove</find>
+      <find>product</find>
+      <find>brandId</find>
+      <find>20</find>
+      <find>clearForm</find>
+      <find>cancelForm</find>
+      <find>productTypeId</find>
+      <find>mediasArr</find>
+      <find>handleUploadSeccess</find>
+      <find>handleOutOfRange</find>
     </findStrings>
     <replaceStrings>
       <replace>Brands</replace>
@@ -74,6 +63,9 @@
       <replace>商品</replace>
       <replace>clearProduct</replace>
       <replace>mediasList</replace>
+      <replace>mediasFile</replace>
+      <replace>handleMediasRemove</replace>
+      <replace>22</replace>
     </replaceStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -143,12 +135,6 @@
               <item name="vue-admin-master" type="b2602c69:ProjectViewProjectNode" />
               <item name="vue-admin-master" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="vue-admin-master" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vue-admin-master" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="vue-admin-master" type="b2602c69:ProjectViewProjectNode" />
@@ -309,12 +295,12 @@
       <workItem from="1558158349219" duration="24744000" />
       <workItem from="1558226682036" duration="24191000" />
       <workItem from="1558313426730" duration="22473000" />
-      <workItem from="1558398900926" duration="832000" />
+      <workItem from="1558398900926" duration="27966000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="101500000" />
+    <option name="totallyTimeSpent" value="128634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
@@ -334,7 +320,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982457" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28272533" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28272533" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="JRebel" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -472,18 +458,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/product/ProductType.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="994">
-          <caret line="98" column="44" lean-forward="false" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/Main.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="261">
           <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -491,36 +470,46 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="609">
           <caret line="21" column="37" lean-forward="false" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes.js">
+    <entry file="file://$PROJECT_DIR$/src/views/product/ProductType.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1363">
-          <caret line="47" column="67" lean-forward="true" selection-start-line="47" selection-start-column="67" selection-end-line="47" selection-end-column="67" />
+        <state relative-caret-position="-1571">
+          <caret line="98" column="44" lean-forward="false" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/product/Brand.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="377" column="59" lean-forward="false" selection-start-line="377" selection-start-column="59" selection-end-line="377" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/SquillEditorFastdfs.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="1" column="32" lean-forward="true" selection-start-line="1" selection-start-column="32" selection-end-line="1" selection-end-column="32" />
+        <state relative-caret-position="290">
+          <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="33" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/product/Brand.vue">
+    <entry file="file://$PROJECT_DIR$/src/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7274">
-          <caret line="375" column="62" lean-forward="false" selection-start-line="375" selection-start-column="62" selection-end-line="375" selection-end-column="62" />
+        <state relative-caret-position="417">
+          <caret line="47" column="67" lean-forward="true" selection-start-line="47" selection-start-column="67" selection-end-line="47" selection-end-column="67" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/product/Product.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="635">
-          <caret line="400" column="56" lean-forward="true" selection-start-line="400" selection-start-column="56" selection-end-line="400" selection-end-column="56" />
+        <state relative-caret-position="303">
+          <caret line="149" column="89" lean-forward="true" selection-start-line="149" selection-start-column="89" selection-end-line="149" selection-end-column="89" />
           <folding />
         </state>
       </provider>

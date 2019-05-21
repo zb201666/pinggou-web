@@ -1,6 +1,6 @@
 <template>
     <section>
-        <!--工具条-->
+        <!-------------------------------------工具条----------------------------------------->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
@@ -16,7 +16,7 @@
                     <el-button type="warning" @click="handleAdd" icon="el-icon-circle-plus-outline" size="mini" round>新增</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="handleAdd" icon="el-icon-view" size="mini" round>显示属性</el-button>
+                    <el-button type="primary" @click="handleViewProperties" icon="el-icon-view" size="mini" round :disabled="this.sels.length!==1">显示属性</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="success" @click="handleAdd" icon="el-icon-more" size="mini" round>SKU属性</el-button>
@@ -30,7 +30,7 @@
             </el-form>
         </el-col>
 
-        <!--列表-->
+        <!--------------------------------------------列表------------------------------------------->
         <el-table :data="products" border :header-cell-style="cellStyle" :cell-style="cellStyle" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="50">
             </el-table-column>
@@ -62,14 +62,14 @@
             </el-table-column>
         </el-table>
 
-        <!--工具条-->
+        <!------------------------------------------工具条-------------------------------------------->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" size="mini" icon='el-icon-error' @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="page"
-                    :page-sizes="[5, 10, 15, 20]"
+                    :page-sizes="[5, 10, 15, 22]"
                     :page-size="size"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
@@ -77,21 +77,21 @@
             </el-pagination>
         </el-col>
 
-        <!--新增/编辑界面-->
-        <el-dialog title="新增/编辑" :visible.sync="productVisible" width="40%" center :close-on-click-modal="false" @close="clearForm">
+        <!----------------------------------------新增/编辑界面------------------------------------------>
+        <el-dialog title="新增/编辑" :visible.sync="productVisible" width="50%" center :close-on-click-modal="false" @close="clearForm">
             <el-form :model="product" label-width="80px" :rules="productRules" ref="product">
                 <el-form-item label="标题" prop="name">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-input v-model="product.name" auto-complete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="副标题" prop="subName">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-input v-model="product.subName" auto-complete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="品牌" prop="brandId">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-select style="width: 100%" v-model="product.brandId" clearable filterable placeholder="请选择品牌">
                             <el-option v-for="item in brands" :label="item.name" :value="item.id">
                             </el-option>
@@ -99,36 +99,35 @@
                     </el-col>
                 </el-form-item>
                 <el-form-item label="类型" prop="productTypeId">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-cascader style="width: 100%" v-model="product.productTypeId" placeholder="请选择类型" :props="defaultProps"
                                      :options="productTypes" clearable filterable change-on-select>
                         </el-cascader>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="媒体属性">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-upload
                                 class="upload-demo"
                                 action="http://localhost:9527/services/common/file/upload"
-                                :before-remove="handleLogoRemove"
+                                :before-remove="handleMediasRemove"
                                 :file-list="mediasList"
                                 list-type="picture"
                                 :on-success="handleUploadSeccess"
-                                :on-exceed="handleOutOfRange"
-                                :auto-upload="true"
-                                :on-change="handleChange">
+                                :on-remove="handleRemoveSeccess"
+                                :accept="'image/*'">
                             <el-button size="small" type="primary">点击上传</el-button>
                         </el-upload>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="商品描述">
-                    <el-col :span="20">
+                    <el-col :span="22">
                         <el-input type="textarea" v-model="product.description"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="商品详情">
-                    <el-col :span="20">
-                        <SquillEditorFastdfs host="http://192.168.43.127" v-model="product.content" uploadUrl='http://localhost:9527/services/common/file/upload'></SquillEditorFastdfs>
+                    <el-col :span="22">
+                        <SquillEditorFastdfs host="http://192.168.1.6" v-model="product.content" uploadUrl='http://localhost:9527/services/common/file/upload'></SquillEditorFastdfs>
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -137,6 +136,28 @@
                 <el-button type="primary" @click.native="submitForm" :loading="submitLoading">提交</el-button>
             </div>
         </el-dialog>
+
+
+
+        <!--------------------------------------------显示属性------------------------------------->
+        <el-dialog title="显示属性管理" :visible.sync="viewDialogVisible" center width="40%" @close="cancelViewDialog">
+            <!--卡片-->
+            <el-card class="box-card" shadow="hover">
+                <div v-for="index in viewProperties.length" :key="index" class="text item" style="margin-bottom: 5px">
+                    <el-row>
+                        <el-col :span="8" style="color: #20a0ff;padding-top: 10px;padding-right:20px;text-align: right">{{viewProperties[index-1].specName}}:</el-col>
+                        <el-col :span="16">
+                            <el-input v-model="viewProperties[index-1].value"></el-input>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click.native="cancelViewDialog">取 消</el-button>
+                <el-button type="primary" @click.native="submitViewProperties">确 定</el-button>
+            </span>
+        </el-dialog>
+
     </section>
 </template>
 
@@ -149,7 +170,7 @@
         data() {
             var validateKeyword = (rule, value, callback) => {
                 if (!value) {
-                    callback(new Error('请输入名称'));
+                    callback(new Error('请输入标题'));
                 } else {
                     if(!this.product.id){//添加的时候发请求验证名称是否存在
                         this.$http.post("/product/product/page",{
@@ -157,7 +178,7 @@
                         }).then((res)=>{
                             let data = res.data;
                             if(data.rows.length>0){
-                                callback(new Error('该名称已存在'));
+                                callback(new Error('该标题已存在'));
                             }else{
                                 callback();
                             }
@@ -167,30 +188,17 @@
                     }
                 }
             };
-            var validateNumber = (rule, value, callback) => {
-                if (!value) {
-                    callback(new Error('请输入排序索引'));
-                } else {
-                    if(!Number.isInteger(parseInt(value))) {
-                        callback(new Error('请输入数字值'));
-                    }else{
-                        if(value < 0) {
-                            callback(new Error('不能小于0'));
-                        }else {
-                            callback();
-                        }
-                    }
-                }
-            };
             return {
                 filters: {
                     keyword: ''
                 },
+                viewProperties:[],
+                viewDialogVisible:false,
                 products: [],
                 productTypes:[],
                 brands:[],
                 mediasList: [],
-                logoFile:{
+                mediasFile:{
                     url:null,
                     fileId:null
                 },
@@ -209,7 +217,10 @@
                         { required:true, validator: validateKeyword, trigger: 'blur' }
                     ],
                     productTypeId: [
-                        { required:true, message:'请选择类型', trigger: 'blur' }
+                        { required:true, message: "请选择类型", trigger: 'blur' }
+                    ],
+                    brandId: [
+                        { required:true, message: "请选择品牌", trigger: 'blur' }
                     ]
                 },
                 //新增界面数据
@@ -232,6 +243,7 @@
             }
         },
         methods: {
+            /*===================================单元格样式和分页处理==============================================*/
             //列表单元格样式
             cellStyle({row,column,rowIndex,columnIndex}) {
                 return "text-align:center;color:#303133;font-size:14px;padding:7px 0px";
@@ -246,68 +258,125 @@
                 this.page = val;
                 this.getProducts();
             },
+
+            /*=====================================显示属性===============================================*/
+            handleViewProperties(){
+                this.viewDialogVisible = true;
+                let id = this.sels[0].id;
+                this.$http.get("/product/product/viewProperties/"+id).then((res)=>{
+                    this.viewProperties = res.data;
+                })
+            },
+            cancelViewDialog(){
+                this.viewProperties = [];
+                this.viewDialogVisible = false;
+            },
+            submitViewProperties(){
+                let params = {};
+                params.id = this.sels[0].id;
+                params.viewProperties = JSON.stringify(this.viewProperties);
+                this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                    this.$http.post("/product/product/viewProperties",params).then((res)=>{
+                        let data = res.data;
+                        if(data.success){
+                            this.$message({
+                                message:data.message,
+                                type:"success"
+                            });
+                            this.viewDialogVisible = false;
+                        }else{
+                            this.$message({
+                                message:data.message,
+                                type:"error"
+                            })
+                        }
+                    })
+                })
+            },
+
+
+
+
+
+
+
+
+
+
+
+            /*==============================商品CRUD=============================================================*/
             //文件上传成功钩子函数
-            handleUploadSeccess(response){
-                this.product.mediasArr.push(response.data);
-            },
-            //文件超出个数
-            handleOutOfRange(){
-                this.$message({
-                    message: '只能上传一张图片',
-                    type: 'warning'
-                });
-            },
-            //选择文件时回调
-            handleChange(file, fileList){
+            handleUploadSeccess(file,response,fileList){
                 this.mediasList = fileList;
             },
-            //删除文件
-            handleLogoRemove(file,fileList){
-                let fileId = null;
-                if(file.response){
-                    fileId = file.response.data;
-                }else if(file.fileId){
-                    fileId = file.fileId;
+            //文件删除成功钩子函数
+            handleRemoveSeccess(file, fileList){
+                this.mediasList = fileList;
+            },
+            //取得需要保存的媒体数据
+            getMediasArr(){
+                if(this.mediasList.length) {
+                    for (let index in this.mediasList) {
+                        if (this.mediasList[index].response && this.mediasList[index].response.data) {
+                            this.product.mediasArr.push(this.mediasList[index].response.data);
+                        } else if (this.mediasList[index].fileId) {
+                            this.product.mediasArr.push(this.mediasList[index].fileId);
+                        }
+                    }
                 }
-                this.$http.delete("/common/file/delete",{
-                    params:{
-                        fileId:fileId
-                    }
-                }).then(res=>{
-                    let data = res.data;
-                    if(data.success){
-                        this.$message({
-                            message: data.message,
-                            type: 'success'
-                        });
-                        //如果是修改，删除文件后需要将数据中的logo信息设置为空
-                        if(this.product.id){
-                            this.$http.post("/product/product/updateLogo",{
-                                id:this.product.id,
-                                logo:null
-                            }).then((res)=>{
-                                if(res.data.success){
-                                    this.$message({
-                                        message: res.data.message,
-                                        type: 'success'
-                                    });
-                                }else{
-                                    this.$message({
-                                        message: res.data.message,
-                                        type: 'error'
-                                    });
-                                }
-                            })
-                        };
-                    }else{
-                        this.$message({
-                            message: data.message,
-                            type: 'error'
-                        });
-                        //返回false表示无法删除
-                        return false;
-                    }
-                })
+                return this.product.mediasArr;
+            },
+            //删除文件
+            handleMediasRemove(fileList){
+                let fileIds = [];
+                if(fileList.length){
+                        for(let index in fileList){
+                            if(fileList[index].response && fileList[index].response.data){
+                                fileIds.push(fileList[index].response.data);
+                            }else if(fileList[index].fileId){
+                                fileIds.push(fileList[index].fileId);
+                            }
+                        }
+                    this.$http.delete("/common/file/batchDelete",{
+                        params:{
+                            fileIds:fileIds.join(",")
+                        }
+                    }).then(res=>{
+                        let data = res.data;
+                        if(data.success){
+                            this.$message({
+                                message: data.message,
+                                type: 'success'
+                            });
+                            //如果是修改，删除文件后需要将数据中的媒体信息设置为空
+                            if(this.product.id){
+                                this.$http.post("/product/product/updateMedias",{
+                                    id:this.product.id,
+                                    medias:null
+                                }).then((res)=>{
+                                    if(res.data.success){
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'success'
+                                        });
+                                    }else{
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'error'
+                                        });
+                                    }
+                                })
+                            };
+                        }else{
+                            this.$message({
+                                message: data.message,
+                                type: 'error'
+                            });
+                            //返回false表示无法删除
+                            return false;
+                        }
+                    })
+                }
             },
             //获取商品列表
             getProducts() {
@@ -360,7 +429,7 @@
                     id:null,
                     name:'',
                     subName:'',
-                    productTypeId:null,
+                    productTypeId:[],
                     brandId:null,
                     maxPrice:null,
                     minPrice:null,
@@ -383,7 +452,7 @@
             //取消表单
             cancelForm() {
                 if(!this.product.id && this.mediasList.length){//添加才删除
-                    this.handleLogoRemove(this.mediasList[0]);//清空logo
+                    this.handleMediasRemove(this.mediasList);//清空媒体属性
                 }
                 this.clearForm();
                 this.productVisible = false;
@@ -394,12 +463,18 @@
                 this.productVisible = true;
                 this.product = Object.assign({}, row);
                 this.product.productTypeId = this.cascaderSelect(this.product.productTypeId,this.productTypes);
-                if(row.logo){
+                if(row.medias){
+                    let arr = JSON.parse(row.medias);
                     //图片回填
-                    this.logoFile.url = "http://192.168.43.127"+row.logo;
-                    this.logoFile.fileId = row.logo;
-                    this.mediasList.push(this.logoFile);
+                    for(let index in arr){
+                        let mediasFile = {
+                            url :"http://192.168.1.6"+arr[index],
+                            fileId : arr[index]
+                        }
+                        this.mediasList.push(mediasFile);
+                    }
                 }
+                this.product.mediasArr = [];
             },
             //显示新增界面
             handleAdd: function () {
@@ -450,7 +525,7 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.submitLoading = true;
                             let para = Object.assign({}, this.product);
-                            para.medias = this.arrToString(this.product.mediasArr);
+                            para.medias = this.arrToString(this.getMediasArr());
                             para.productTypeId = para.productTypeId[para.productTypeId.length - 1];
                             this.$http.post("/product/product", para)
                                 .then((result) => {

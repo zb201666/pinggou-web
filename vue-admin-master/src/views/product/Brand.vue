@@ -250,50 +250,52 @@
             //删除文件
             handleLogoRemove(file,fileList){
                 let fileId = null;
-                if(file.response){
-                    fileId = file.response.data;
-                }else if(file.fileId){
-                    fileId = file.fileId;
+                if(file){
+                    if(file.response){
+                        fileId = file.response.data;
+                    }else if(file.fileId){
+                        fileId = file.fileId;
+                    }
+                    this.$http.delete("/common/file/delete",{
+                        params:{
+                            fileId:fileId
+                        }
+                    }).then(res=>{
+                        let data = res.data;
+                        if(data.success){
+                            this.$message({
+                                message: data.message,
+                                type: 'success'
+                            });
+                            //如果是修改，删除文件后需要将数据中的logo信息设置为空
+                            if(this.brand.id){
+                                this.$http.post("/product/brand/updateLogo",{
+                                    id:this.brand.id,
+                                    logo:null
+                                }).then((res)=>{
+                                    if(res.data.success){
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'success'
+                                        });
+                                    }else{
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'error'
+                                        });
+                                    }
+                                })
+                            };
+                        }else{
+                            this.$message({
+                                message: data.message,
+                                type: 'error'
+                            });
+                            //返回false表示无法删除
+                            return false;
+                        }
+                    })
                 }
-                this.$http.delete("/common/file/delete",{
-                    params:{
-                        fileId:fileId
-                    }
-                }).then(res=>{
-                    let data = res.data;
-                    if(data.success){
-                        this.$message({
-                            message: data.message,
-                            type: 'success'
-                        });
-                        //如果是修改，删除文件后需要将数据中的logo信息设置为空
-                        if(this.brand.id){
-                            this.$http.post("/product/brand/updateLogo",{
-                                id:this.brand.id,
-                                logo:null
-                            }).then((res)=>{
-                                if(res.data.success){
-                                    this.$message({
-                                        message: res.data.message,
-                                        type: 'success'
-                                    });
-                                }else{
-                                    this.$message({
-                                        message: res.data.message,
-                                        type: 'error'
-                                    });
-                                }
-                            })
-                        };
-                    }else{
-                        this.$message({
-                            message: data.message,
-                            type: 'error'
-                        });
-                        //返回false表示无法删除
-                        return false;
-                    }
-                })
             },
             //获取商品品牌列表
             getBrands() {
@@ -373,7 +375,7 @@
                 this.brand.productTypeId = this.cascaderSelect(this.brand.productTypeId,this.productTypes);
                 if(row.logo){
                     //图片回填
-                    this.logoFile.url = "http://192.168.43.127"+row.logo;
+                    this.logoFile.url = "http://192.168.1.6"+row.logo;
                     this.logoFile.fileId = row.logo;
                     this.logoList.push(this.logoFile);
                 }

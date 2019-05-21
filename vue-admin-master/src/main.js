@@ -14,7 +14,14 @@ import routes from './routes'
 Mock.bootstrap();*/   //去掉Mock测试
 import 'font-awesome/css/font-awesome.min.css'
 import axios from 'axios'
+import  VueQuillEditor from 'vue-quill-editor'
 
+
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+
+Vue.use(VueQuillEditor)
 Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)

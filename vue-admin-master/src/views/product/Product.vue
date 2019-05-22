@@ -19,7 +19,7 @@
                     <el-button type="primary" @click="handleViewProperties" icon="el-icon-view" size="mini" round :disabled="this.sels.length!==1">显示属性</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="success" @click="handleAdd" icon="el-icon-more" size="mini" round>SKU属性</el-button>
+                    <el-button type="success" @click="handleSkuProperties" icon="el-icon-more" size="mini" round :disabled="this.sels.length!==1">SKU属性</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="warning" @click="handleAdd" icon="el-icon-upload2" size="mini" round>上架</el-button>
@@ -127,7 +127,12 @@
                 </el-form-item>
                 <el-form-item label="商品详情">
                     <el-col :span="22">
-                        <SquillEditorFastdfs host="http://192.168.1.6" v-model="product.content" uploadUrl='http://localhost:9527/services/common/file/upload'></SquillEditorFastdfs>
+                        <SquillEditorFastdfs
+                                host="http://192.168.1.6"
+                                v-model="product.content"
+                                uploadUrl='http://localhost:9527/services/common/file/upload'
+                                >
+                        </SquillEditorFastdfs>
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -157,6 +162,52 @@
                 <el-button type="primary" @click.native="submitViewProperties">确 定</el-button>
             </span>
         </el-dialog>
+
+        <!-------------------------------------------sku属性------------------------------------------>
+        <el-dialog title="sku属性管理" :visible.sync="skuDialogVisible" center width="60%" @close="cancelSkuDialog">
+            <!--表示一个sku属性-->
+            <el-card class="box-card" shadow="hover" v-for="property in skuProperties" >
+                <div slot="header" class="clearfix">
+                    <span style="color: #20a0ff">{{property.specName}}</span>
+                </div>
+                <!--表示一个属性选项-->
+                <div v-for="index in property.options.length+1" :key="index" class="text item" style="margin-bottom: 5px">
+                    <el-row>
+                        <el-input v-model="property.options[index-1]" style="width:80%"></el-input>
+                        <el-button icon="el-icon-remove" type="text" size="small" plain round @click="property.options.splice(index-1,1)" style="width:10%;margin-left: 10px">删除</el-button>
+                    </el-row>
+                </div>
+            </el-card>
+            <el-card class="box-card" shadow="hover" v-show="skus.length>0">
+                <div slot="header" class="clearfix">
+                    <span style="color: #20a0ff">库存和价格</span>
+                </div>
+                <el-table :data="skus" border stripe style="width: 100%" :header-cell-style="cellStyle" :cell-style="cellStyle">
+                    <el-table-column type="index" width="50"></el-table-column>
+                    <template v-for="(value,key) in skus[0]">
+                        <!--更改价格和库存单元格和标题-->
+                        <el-table-column v-if="key=='price'" :prop="key" label="价格">
+                            <template scope="scope">
+                                <el-input v-model="scope.row.price"></el-input>
+                            </template>
+                        </el-table-column>
+                        <el-table-column v-else-if="key=='availableStock'" :prop="key" label="库存">
+                            <template scope="scope">
+                                <el-input v-model="scope.row.availableStock"></el-input>
+                            </template>
+                        </el-table-column>
+                        <!--隐藏skuIndex属性-->
+                        <el-table-column v-else-if="key!='skuIndex'" :prop="key" :label="key">
+                        </el-table-column>
+                    </template>
+                </el-table>
+            </el-card>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click.native="cancelSkuDialog">取 消</el-button>
+                <el-button type="primary" @click.native="submitSkuProperties">确 定</el-button>
+            </span>
+        </el-dialog>
+
 
     </section>
 </template>
@@ -194,9 +245,12 @@
                 },
                 viewProperties:[],
                 viewDialogVisible:false,
+                skuProperties:[],
+                skuDialogVisible:false,
                 products: [],
                 productTypes:[],
                 brands:[],
+                skus:[],
                 mediasList: [],
                 mediasFile:{
                     url:null,
@@ -226,14 +280,14 @@
                 //新增界面数据
                 product: {
                     id:null,
-                    name:'',
-                    subName:'',
+                    name:null,
+                    subName:null,
                     productTypeId:null,
                     brandId:null,
                     maxPrice:null,
                     minPrice:null,
-                    description:'',
-                    content:'',
+                    description:null,
+                    content:null,
                     mediasArr:[]
                 },
                 defaultProps: {
@@ -295,6 +349,52 @@
             },
 
 
+            /*=========================================sku属性============================================*/
+            cancelSkuDialog(){
+                this.skuDialogVisible = false;
+            },
+            submitSkuProperties(){
+                let params = {};
+                params.productId = this.sels[0].id;
+                params.skuProperties = JSON.stringify(this.skuProperties);
+                params.skus = this.skus;
+                this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                    this.$http.post("/product/product/skuProperties",params).then((res)=>{
+                        let data = res.data;
+                        if(data.success){
+                            this.$message({
+                                message:data.message,
+                                type:"success"
+                            });
+                            this.skuDialogVisible = false;
+                        }else{
+                            this.$message({
+                                message:data.message,
+                                type:"error"
+                            })
+                        }
+                    })
+                })
+            },
+            handleSkuProperties(){
+                this.skuDialogVisible = true;
+                let id = this.sels[0].id;
+                this.$http.get("/product/product/skuProperties/"+id).then((res)=>{
+                    this.skuProperties = res.data;
+                });
+                this.$http.get("/product/product/skus/"+id).then((res)=>{
+                    let data = res.data;
+                    for(let i in data){
+                        for(let j in this.skus){
+                            if(data[i].skuIndex==this.skus[j].skuIndex){
+                                this.skus[j].price = data[i].price+"";//注意将整型转为字符串
+                                this.skus[j].availableStock = data[i].availableStock+"";
+                                break;
+                            }
+                        }
+                    }
+                });
+            },
 
 
 
@@ -339,7 +439,7 @@
                         }
                     this.$http.delete("/common/file/batchDelete",{
                         params:{
-                            fileIds:fileIds.join(",")
+                            fileIds:fileIds.join()
                         }
                     }).then(res=>{
                         let data = res.data;
@@ -427,14 +527,14 @@
             clearProduct(){
                 this.product = {
                     id:null,
-                    name:'',
-                    subName:'',
+                    name:null,
+                    subName:null,
                     productTypeId:[],
                     brandId:null,
                     maxPrice:null,
                     minPrice:null,
-                    description:'',
-                    content:'',
+                    description:null,
+                    content:null,
                     mediasArr:[]
                 };
             },
@@ -566,25 +666,29 @@
                                 type: 'success',
                                 message: data.message
                             });
-                            //删除logo
-                            this.$http.delete("/common/file/delete",{
-                                params:{
-                                    fileId:row.logo
-                                }
-                            }).then(res=>{
-                                let data = res.data;
-                                if(data.success){
-                                    this.$message({
-                                        message: data.message,
-                                        type: 'success'
-                                    });
-                                }else{
-                                    this.$message({
-                                        message: data.message,
-                                        type: 'error'
-                                    });
-                                }
-                            })
+
+                            if(row.medias){
+                                let medias = JSON.parse(row.medias);
+                                //删除媒体文件
+                                this.$http.delete("/common/file/batchDelete",{
+                                    params:{
+                                        fileIds:medias.join()
+                                    }
+                                }).then(res=>{
+                                    let data = res.data;
+                                    if(data.success){
+                                        this.$message({
+                                            message: data.message,
+                                            type: 'success'
+                                        });
+                                    }else{
+                                        this.$message({
+                                            message: data.message,
+                                            type: 'error'
+                                        });
+                                    }
+                                })
+                            }
                         }else{
                             this.$message({
                                 message: data.message,
@@ -597,8 +701,17 @@
             },
             //批量删除
             batchRemove: function () {
-                var ids = this.sels.map(item => item.id);
-                var fileIds = this.sels.map(item => item.logo);
+                let ids = this.sels.map(item => item.id);
+                let medias = this.sels.map(item => item.medias);
+                //将medias中的值全部放在一个数组中
+                let fileIds = medias.reduce((pre,cur)=>{
+                    if(cur){
+                        JSON.parse(cur).forEach(e=>{
+                            pre.push(e);
+                        });
+                    }
+                    return pre;
+                },[]);
                 this.$confirm('确认删除选中记录吗？', '提示', {
                     type: 'warning'
                 }).then(() => {
@@ -609,23 +722,27 @@
                                 type: 'success',
                                 message: data.message
                             });
-                            this.$http.delete("/common/file/batchDelete",{
-                                params:{
-                                    fileIds:fileIds.join(",")
-                                }
-                            }).then(()=>{
-                                if(res.data.success){
-                                    this.$message({
-                                        type: 'success',
-                                        message: res.data.message
-                                    });
-                                }else{
-                                    this.$message({
-                                        message: res.data.message,
-                                        type: 'error'
-                                    });
-                                }
-                            });
+
+                            //删除媒体文件
+                            if(fileIds.length){
+                                this.$http.delete("/common/file/batchDelete",{
+                                    params:{
+                                        fileIds:fileIds.join()
+                                    }
+                                }).then(()=>{
+                                    if(res.data.success){
+                                        this.$message({
+                                            type: 'success',
+                                            message: res.data.message
+                                        });
+                                    }else{
+                                        this.$message({
+                                            message: res.data.message,
+                                            type: 'error'
+                                        });
+                                    }
+                                });
+                            }
                         }else{
                             this.$message({
                                 message: data.message,
@@ -641,6 +758,39 @@
             this.getProducts();
             this.getProductType();
             this.getBrands();
+        },
+        watch:{
+            skuProperties:{//深度监听，可监听到对象、数组的变化
+                handler(val, oldVal){
+                    if(this.skuProperties.length){
+                        //动态生成skus值
+                        let res = this.skuProperties.reduce((pre,cur)=>{
+                            let result = [];
+                            pre.forEach(o1=>{
+                                o1.skuIndex = (o1.skuIndex||'')+"_";//skuIndex存在就拼接原值+"_"，没有就""+"_"
+                                for(let i=0;i<cur.options.length;i++){
+                                    let o2 = cur.options[i];
+                                    let temp = {};
+                                    Object.assign(temp,o1);//将ol复制给temp
+                                    temp[cur.specName] = o2;//将o2赋值给temp中的cur.specName
+                                    temp.skuIndex += i;//sku索引拼接当前选项值的索引，最终拼接成形如_X_X_X的结果
+                                    result.push(temp);//将循环结果加入最终结果中
+                                }
+                            });
+                            return result;
+                        },[{}]);
+
+                        //添加价格和库存
+                        res.forEach(o1=>{
+                            o1.price = "0";
+                            o1.availableStock = "0";
+                            o1.skuIndex = o1.skuIndex.substring(1);
+                        });
+                        this.skus = res;
+                    }
+                },
+                deep:true
+            }
         }
     }
 

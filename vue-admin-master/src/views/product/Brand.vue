@@ -1,6 +1,6 @@
 <template>
     <section>
-        <!--工具条-->
+        <!-----------------------------------工具条---------------------------------------->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
@@ -18,7 +18,7 @@
             </el-form>
         </el-col>
 
-        <!--列表-->
+        <!-------------------------------列表----------------------------------------------------->
         <el-table :data="brands" border :header-cell-style="cellStyle" :cell-style="cellStyle" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="50">
             </el-table-column>
@@ -46,7 +46,7 @@
             </el-table-column>
         </el-table>
 
-        <!--工具条-->
+        <!----------------------------------工具条---------------------------------------------->
         <el-col :span="24" class="toolbar">
             <el-button type="danger" size="mini" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
             <el-pagination
@@ -61,7 +61,7 @@
             </el-pagination>
         </el-col>
 
-        <!--新增/编辑界面-->
+        <!-----------------------------------新增/编辑界面------------------------------------>
         <el-dialog title="新增/编辑" :visible.sync="brandVisible" width="40%" center :close-on-click-modal="false" @close="clearForm">
             <el-form :model="brand" label-width="80px" :rules="brandRules" ref="brand">
                 <el-form-item label="名称" prop="name">
@@ -375,7 +375,7 @@
                 this.brand.productTypeId = this.cascaderSelect(this.brand.productTypeId,this.productTypes);
                 if(row.logo){
                     //图片回填
-                    this.logoFile.url = "http://192.168.1.6"+row.logo;
+                    this.logoFile.url = "http://192.168.79.188"+row.logo;
                     this.logoFile.fileId = row.logo;
                     this.logoList.push(this.logoFile);
                 }

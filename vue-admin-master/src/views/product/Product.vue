@@ -22,10 +22,10 @@
                     <el-button type="success" @click="handleSkuProperties" icon="el-icon-more" size="mini" round :disabled="this.sels.length!==1">SKU属性</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="warning" @click="handleAdd" icon="el-icon-upload2" size="mini" round>上架</el-button>
+                    <el-button type="warning" @click="handleOnSale(1)" icon="el-icon-upload2" size="mini" round :disabled="this.sels.length<=0">上架</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="danger" @click="handleAdd" icon="el-icon-download" size="mini" round>下架</el-button>
+                    <el-button type="danger" @click="handleOnSale(0)" icon="el-icon-download" size="mini" round :disabled="this.sels.length<=0">下架</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -38,15 +38,15 @@
             </el-table-column>
             <el-table-column prop="name" label="标题" width="250">
             </el-table-column>
-            <el-table-column prop="subName" label="副标题" width="150">
+            <el-table-column prop="subName" label="副标题" width="130">
             </el-table-column>
             <el-table-column prop="productType.name" label="商品类型">
             </el-table-column>
             <el-table-column prop="brand.name" label="商品品牌">
             </el-table-column>
-            <el-table-column prop="onSaleTime" label="上架时间" sortable width="160">
+            <el-table-column prop="onSaleTime" label="上架时间" sortable width="160" :formatter="formatterOnSaleTime">
             </el-table-column>
-            <el-table-column prop="offSaleTime" label="下架时间" sortable width="160">
+            <el-table-column prop="offSaleTime" label="下架时间" sortable width="160" :formatter="formatterOffSaleTime">
             </el-table-column>
             <el-table-column prop="state" label="状态" sortable width="80">
                 <template scope="scope">
@@ -54,7 +54,7 @@
                     <span v-else style="background-color: #29ce57;padding: 2px 10px;border-radius: 3px;color: #fff">上架</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" width="200">
                 <template scope="scope">
                     <el-button size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="mini" icon="el-icon-circle-close" @click="handleDel(scope.$index, scope.row)">删除</el-button>
@@ -128,7 +128,7 @@
                 <el-form-item label="商品详情">
                     <el-col :span="22">
                         <SquillEditorFastdfs
-                                host="http://192.168.1.6"
+                                host="http://192.168.79.188"
                                 v-model="product.content"
                                 uploadUrl='http://localhost:9527/services/common/file/upload'
                                 >
@@ -379,6 +379,8 @@
             handleSkuProperties(){
                 this.skuDialogVisible = true;
                 let id = this.sels[0].id;
+                this.skuProperties = [];
+                this.skus = [];
                 this.$http.get("/product/product/skuProperties/"+id).then((res)=>{
                     this.skuProperties = res.data;
                 });
@@ -396,7 +398,45 @@
                 });
             },
 
-
+            /*======================================商品上下架========================================================*/
+            handleOnSale(state){
+                let flag = false;
+                this.sels.forEach(s=>{
+                    if(s.state==state){
+                        flag = true;
+                    }
+                });
+                if(flag){
+                    this.$message({
+                        message: "请不要重复"+(state==1?"上":"下")+"架",
+                        type: 'warning'
+                    });
+                    return;
+                }
+                this.$confirm("确认"+(state==1?"上":"下")+"架吗？", '提示', {}).then(() => {
+                    let ids = this.sels.map(item=>item.id).join();
+                    let url = state==1?"/product/product/onSale":"/product/product/offSale";
+                    this.$http.get(url, {
+                        params:{
+                            ids:ids
+                        }
+                    }).then((result) => {
+                            //成功后的回调
+                            let data = result.data;
+                            if (data.success) {
+                                //成功
+                                this.$message({
+                                    message: data.message,
+                                    type: 'success'
+                                });
+                                this.queryProducts();
+                            } else {
+                                //失败
+                                this.$message.error(data.message);
+                            }
+                        });
+                });
+            },
 
 
 
@@ -405,6 +445,7 @@
 
 
             /*==============================商品CRUD=============================================================*/
+
             //文件上传成功钩子函数
             handleUploadSeccess(file,response,fileList){
                 this.mediasList = fileList;
@@ -413,6 +454,34 @@
             handleRemoveSeccess(file, fileList){
                 this.mediasList = fileList;
             },
+
+            formatterOnSaleTime(row, column) {
+                return row.onSaleTime ? this.formatDate(row.onSaleTime) : ""
+            },
+            formatterOffSaleTime(row, column) {
+                return row.offSaleTime ? this.formatDate(row.offSaleTime) : ""
+            },
+
+            //时间显示转换
+            formatDate(longTime) {
+                let date = new Date(longTime);
+                let year = date.getFullYear();//2019
+                let month = date.getMonth() + 1;//月份从0开始
+                let day = date.getDate();//日
+                let hour = date.getHours();
+                let minute = date.getMinutes();
+                let second = date.getSeconds();
+                return year + "-" + this.numberFormatter(month) + "-" + this.numberFormatter(day) + " "
+                    + this.numberFormatter(hour) + ":" + this.numberFormatter(minute) + ":" + this.numberFormatter(second);
+            },
+            numberFormatter(num) {
+                if (num < 10) {
+                    return "0" + num;
+                }
+                return num;
+            },
+
+
             //取得需要保存的媒体数据
             getMediasArr(){
                 if(this.mediasList.length) {
@@ -450,23 +519,8 @@
                             });
                             //如果是修改，删除文件后需要将数据中的媒体信息设置为空
                             if(this.product.id){
-                                this.$http.post("/product/product/updateMedias",{
-                                    id:this.product.id,
-                                    medias:null
-                                }).then((res)=>{
-                                    if(res.data.success){
-                                        this.$message({
-                                            message: res.data.message,
-                                            type: 'success'
-                                        });
-                                    }else{
-                                        this.$message({
-                                            message: res.data.message,
-                                            type: 'error'
-                                        });
-                                    }
-                                })
-                            };
+                                this.updateMedias(this.product.id);
+                            }
                         }else{
                             this.$message({
                                 message: data.message,
@@ -477,6 +531,48 @@
                         }
                     })
                 }
+            },
+
+            //将数据库中的媒体信息设置为空
+            updateMedias(productId){
+                this.$http.post("/product/product/updateMedias",{
+                    id:productId,
+                    medias:null
+                }).then((res)=>{
+                    if(res.data.success){
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success'
+                        });
+                    }else{
+                        this.$message({
+                            message: res.data.message,
+                            type: 'error'
+                        });
+                    }
+                })
+            },
+
+            //批量删除媒体图片
+            removeBatchMedias(medias){
+                this.$http.delete("/common/file/batchDelete",{
+                    params:{
+                        fileIds:medias.join()
+                    }
+                }).then(res=>{
+                    let data = res.data;
+                    if(data.success){
+                        this.$message({
+                            message: data.message,
+                            type: 'success'
+                        });
+                    }else{
+                        this.$message({
+                            message: data.message,
+                            type: 'error'
+                        });
+                    }
+                })
             },
             //获取商品列表
             getProducts() {
@@ -568,13 +664,18 @@
                     //图片回填
                     for(let index in arr){
                         let mediasFile = {
-                            url :"http://192.168.1.6"+arr[index],
+                            url :"http://192.168.79.188"+arr[index],
                             fileId : arr[index]
-                        }
+                        };
                         this.mediasList.push(mediasFile);
                     }
                 }
                 this.product.mediasArr = [];
+                this.$http.get("/product/productExt/loadProductExtByProductId?productId="+row.id).then((res)=>{
+                    let data = res.data;
+                    this.product.description = data.description;
+                    this.product.content = data.richContent;
+                })
             },
             //显示新增界面
             handleAdd: function () {
@@ -627,6 +728,7 @@
                             let para = Object.assign({}, this.product);
                             para.medias = this.arrToString(this.getMediasArr());
                             para.productTypeId = para.productTypeId[para.productTypeId.length - 1];
+                            console.debug(para);
                             this.$http.post("/product/product", para)
                                 .then((result) => {
                                     //成功后的回调
@@ -669,25 +771,7 @@
 
                             if(row.medias){
                                 let medias = JSON.parse(row.medias);
-                                //删除媒体文件
-                                this.$http.delete("/common/file/batchDelete",{
-                                    params:{
-                                        fileIds:medias.join()
-                                    }
-                                }).then(res=>{
-                                    let data = res.data;
-                                    if(data.success){
-                                        this.$message({
-                                            message: data.message,
-                                            type: 'success'
-                                        });
-                                    }else{
-                                        this.$message({
-                                            message: data.message,
-                                            type: 'error'
-                                        });
-                                    }
-                                })
+                                this.removeBatchMedias(medias);
                             }
                         }else{
                             this.$message({
@@ -725,23 +809,7 @@
 
                             //删除媒体文件
                             if(fileIds.length){
-                                this.$http.delete("/common/file/batchDelete",{
-                                    params:{
-                                        fileIds:fileIds.join()
-                                    }
-                                }).then(()=>{
-                                    if(res.data.success){
-                                        this.$message({
-                                            type: 'success',
-                                            message: res.data.message
-                                        });
-                                    }else{
-                                        this.$message({
-                                            message: res.data.message,
-                                            type: 'error'
-                                        });
-                                    }
-                                });
+                                this.removeBatchMedias(fileIds);
                             }
                         }else{
                             this.$message({

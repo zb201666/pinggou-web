@@ -68,7 +68,7 @@
             this.$http.post("/plat/user/login",loginParams).then(res=>{
               let data = res.data;
               if(data.success){
-                  sessionStorage.setItem('user', JSON.stringify({"name":"张斌"}));
+                  sessionStorage.setItem('user', JSON.stringify({"name":"张斌","avatar":"../../static/head001.jpg"}));
                   this.$router.push({ path: '/echarts' });
               }else{
                   this.$message({
@@ -84,7 +84,16 @@
           }
         });
       }
-    }
+    },
+    created() {
+        var lett = this;
+        document.onkeydown = function(e) {
+            var key = window.event.keyCode;
+            if (key == 13) {
+                lett.handleSubmit2();
+            }
+        }
+    },
   }
 
 </script>

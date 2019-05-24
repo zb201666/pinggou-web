@@ -27,17 +27,19 @@
             </div>
         </el-aside>
         <el-main>
-            <!--列表-->
-            <el-table :data="productType" border :header-cell-style="cellStyle" :cell-style="cellStyle" highlight-current-row v-loading="listLoading" style="width: 100%;">
-               <!-- <el-table-column type="selection" width="50">
-                </el-table-column>-->
+            <!---------------------------------列表----------------------------------->
+            <el-table :data="showProductType" border :header-cell-style="cellStyle" :cell-style="cellStyle"
+                      highlight-current-row v-loading="listLoading" style="width: 100%;"
+                      :row-class-name="tableRowClassName" height="570" v-show="showProductType.length>0">
+                <!-- <el-table-column type="selection" width="50">
+                 </el-table-column>-->
                 <el-table-column type="index" width="50">
                 </el-table-column>
                 <el-table-column prop="name" label="名称" sortable>
                 </el-table-column>
                 <el-table-column prop="parent.name" label="父级菜单">
                 </el-table-column>
-                <el-table-column prop="path" label="路径">
+                <el-table-column prop="createTime" label="创建时间" :formatter="formatterCreateTime">
                 </el-table-column>
                 <el-table-column prop="totalCount" label="商品数量" sortable>
                 </el-table-column>
@@ -49,29 +51,125 @@
                 </el-table-column>
             </el-table>
         </el-main>
+
+        <!-------------------------------新增/编辑--------------------------------->
+        <el-dialog title="新增/编辑" :visible.sync="productTypeVisible" width="50%" center :close-on-click-modal="false" :before-close="clearForm">
+            <el-form :model="productType" label-width="100px" :rules="productTypeRules" ref="productType">
+                <el-form-item label="名称" prop="name">
+                    <el-col :span="22">
+                        <el-input v-model="productType.name" auto-complete="off" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="父级类型" prop="pid">
+                    <el-col :span="22">
+                        <el-select style="width: 100%" v-model="productType.pid" clearable filterable placeholder="请选择父级类型">
+                            <el-option v-for="item in chooseProductTypes" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="排序索引" prop="sortIndex">
+                    <el-col :span="22">
+                        <el-input v-model="productType.sortIndex" auto-complete="off" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="商品数量" prop="totalCount">
+                    <el-col :span="22">
+                        <el-input v-model="productType.totalCount" auto-complete="off" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="分类标题">
+                    <el-col :span="22">
+                        <el-input v-model="productType.seoTitle" auto-complete="off" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="分类关键字">
+                    <el-col :span="22">
+                        <el-input v-model="productType.seoKeywords" auto-complete="off" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="商品描述">
+                    <el-col :span="22">
+                        <el-input type="textarea" v-model="productType.description" clearable></el-input>
+                    </el-col>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="cancelForm">取消</el-button>
+                <el-button type="primary" @click.native="submitForm" :loading="submitLoading">提交</el-button>
+            </div>
+        </el-dialog>
+
     </el-container>
-
-
 </template>
 
 <script>
     export default {
         data() {
+            var validateNumber = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('请输入值'));
+                } else {
+                    if(!Number.isInteger(parseInt(value))) {
+                        callback(new Error('请输入数字值'));
+                    }else{
+                        if(value < 0) {
+                            callback(new Error('不能小于0'));
+                        }else {
+                            callback();
+                        }
+                    }
+                }
+            };
             return {
                 menuVisible: false,
-                listLoading:false,
+                listLoading: false,
+                productTypeVisible:false,
+                submitLoading:false,
                 productTypes: [],
+                chooseProductTypes:[],
                 defaultProps: {
                     children: 'children',
                     label: 'name',
                 },
-                productType:null
+                showProductType: [],
+                productType:{
+                    id:null,
+                    name:null,
+                    pid:null,
+                    logo:null,
+                    description:null,
+                    sortIndex:null,
+                    totalCount:null,
+                    seoTitle:null,
+                    seoKeywords:null
+                },
+                productTypeRules:{
+                    name: [
+                        { required:true, message: "请输入名称", trigger: 'blur' }
+                    ],
+                    pid: [
+                        { required:true, message: "请选择父级类型", trigger: 'blur' }
+                    ],
+                    sortIndex: [
+                        { required:true, validator: validateNumber, trigger: 'blur' }
+                    ],
+                    totalCount: [
+                        { required:true, validator: validateNumber, trigger: 'blur' }
+                    ],
+                }
             }
         },
         methods: {
             //列表单元格样式
-            cellStyle({row,column,rowIndex,columnIndex}) {
+            cellStyle({row, column, rowIndex, columnIndex}) {
                 return "text-align:center;color:#303133;font-size:14px;padding:7px 0px";
+            },
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex === 0) {
+                    return 'warning-row';
+                }
+                return '';
             },
             //加载树形结构
             loadTree() {
@@ -82,7 +180,7 @@
             //递归的设置图标
             setIcon(arr) {
                 for (let i = 0; i < arr.length; i++) {
-                    if (arr[i].children.length) {
+                    if (!arr[i].children.length) {
                         arr[i].icon = "el-icon-location-information";
                     } else {
                         arr[i].icon = "el-icon-add-location";
@@ -92,11 +190,12 @@
                 return arr;
             },
             //点击事件
-            handleNodeClick(data,node,element) {
+            handleNodeClick(data, node, element) {
                 this.foo();
-                this.$http.get("/product/productType/"+data.id).then((res)=>{
-                    //this.productType = res.data;
-                    console.debug(res.data);
+                this.$http.get("/product/productType/getProductType/" + data.id).then((res) => {
+                    this.showProductType = [];
+                    //this.showProductType.push(res.data);
+                    this.showProductType = res.data;
                 })
             },
             //右键事件
@@ -107,14 +206,10 @@
                 this.menuVisible = true;
                 // 显示模态窗口，跳出自定义菜单栏
                 var menu = document.querySelector('#menu');
-                menu.style.left = MouseEvent.clientX +30 + 'px';
+                menu.style.left = MouseEvent.clientX + 30 + 'px';
                 // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
                 document.addEventListener('click', this.foo);
                 menu.style.top = MouseEvent.clientY - 70 + 'px';
-                /*console.debug('右键被点击的event:', MouseEvent);
-                console.debug('右键被点击的object:', object);
-                console.debug('右键被点击的value:', Node);
-                console.debug('右键被点击的element:', element);*/
             },
             foo() {
                 // 取消鼠标监听事件 菜单栏
@@ -122,14 +217,59 @@
                 //关闭监听
                 document.removeEventListener('click', this.foo);
             },
-            addProductType() {
 
+            clearForm(){
+                this.productType = {
+                    id:null,
+                    name:null,
+                    pid:null,
+                    logo:null,
+                    description:null,
+                    sortIndex:null,
+                    totalCount:null,
+                    seoTitle:null,
+                    seoKeywords:null
+                };
+                this.$refs.productType.clearValidate();
+                this.productTypeVisible = false;
+            },
+            cancelForm(){
+                this.clearForm();
+            },
+            submitForm(){
+
+            },
+            addProductType() {
+                this.productTypeVisible = true;
             },
             editProductType() {
 
             },
             deleteProductType() {
 
+            },
+
+            formatterCreateTime: function (row, column) {
+                return row.createTime ? this.formatDate(row.createTime) : ""
+            },
+
+            //时间显示转换
+            formatDate(longTime) {
+                let date = new Date(longTime);
+                let year = date.getFullYear();//2019
+                let month = date.getMonth() + 1;//月份从0开始
+                let day = date.getDate();//日
+                let hour = date.getHours();
+                let minute = date.getMinutes();
+                let second = date.getSeconds();
+                return year + "-" + this.numberFormatter(month) + "-" + this.numberFormatter(day) + " "
+                    + this.numberFormatter(hour) + ":" + this.numberFormatter(minute) + ":" + this.numberFormatter(second);
+            },
+            numberFormatter(num) {
+                if (num < 10) {
+                    return "0" + num;
+                }
+                return num;
             },
 
         },
@@ -147,6 +287,10 @@
 
     .el-main {
         border: 1px solid #ccc;
+    }
+
+    .el-table .warning-row {
+        background: oldlace;
     }
 
     .menuItem {

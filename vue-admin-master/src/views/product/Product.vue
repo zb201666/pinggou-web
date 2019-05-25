@@ -178,7 +178,7 @@
                     </el-row>
                 </div>
             </el-card>
-            <el-card class="box-card" shadow="hover" v-show="skus.length>0">
+            <el-card class="box-card" shadow="hover" v-if="skus.length>0">
                 <div slot="header" class="clearfix">
                     <span style="color: #20a0ff">库存和价格</span>
                 </div>
@@ -728,7 +728,6 @@
                             let para = Object.assign({}, this.product);
                             para.medias = this.arrToString(this.getMediasArr());
                             para.productTypeId = para.productTypeId[para.productTypeId.length - 1];
-                            console.debug(para);
                             this.$http.post("/product/product", para)
                                 .then((result) => {
                                     //成功后的回调

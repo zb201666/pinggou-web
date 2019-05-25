@@ -12,6 +12,7 @@ import echarts from './views/charts/echarts.vue'
 import Brand from './views/product/Brand.vue'
 import ProductType from './views/product/ProductType'
 import Product from './views/product/Product'
+import Specification from './views/product/Specification'
 
 let routes = [
     {
@@ -44,7 +45,7 @@ let routes = [
         children: [
             { path: '/brand', component: Brand, name: '商品品牌'},
             { path: '/productType', component: ProductType, name: '商品类型' },
-            { path: '/user', component: user, name: '商品规格' },
+            { path: '/Specification', component: Specification, name: '商品属性' },
             { path: '/product', component: Product, name: '商品管理' },
         ]
     },

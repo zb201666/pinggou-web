@@ -3,7 +3,6 @@
         <el-aside width="300px">
             <el-tree :data="showProductTypes" :props="defaultProps"
                      @node-click="handleNodeClick"
-                     @node-contextmenu="rightClick"
                      :highlight-current="true"
                      node-key="id" :default-expanded-keys="[0]"
                      :expand-on-click-node = "false">
@@ -13,50 +12,54 @@
                     </span>
                 </span>
             </el-tree>
-            <!--鼠标右键菜单栏，其实就是添加一个基于鼠标位置的模态框而已 -->
-            <div v-show="menuVisible">
-                <ul id="menu" class="menu">
-                    <li class="menuItem" @click="addProductType">
-                        <i class="el-icon-circle-plus-outline"></i>添加
-                    </li>
-                    <li class="menuItem" @click="editProductType">
-                        <i class="el-icon-edit"></i>编辑
-                    </li>
-                    <li class="menuItem" @click="deleteProductType">
-                        <i class="el-icon-remove-outline"></i>删除
-                    </li>
-                </ul>
-            </div>
         </el-aside>
         <el-main>
-            <!---------------------------------列表----------------------------------->
-            <el-table :data="showProductType" border :header-cell-style="cellStyle" :cell-style="cellStyle"
-                      highlight-current-row v-loading="listLoading" style="width: 100%;"
-                      :row-class-name="tableRowClassName" height="595" v-if="showProductType.length>0">
-                <!-- <el-table-column type="selection" width="50">
-                 </el-table-column>-->
-                <el-table-column type="index" width="50">
-                </el-table-column>
-                <el-table-column prop="name" label="名称" sortable>
-                </el-table-column>
-                <el-table-column prop="parent.name" label="父级菜单">
-                </el-table-column>
-                <el-table-column prop="createTime" label="创建时间" :formatter="formatterCreateTime">
-                </el-table-column>
-                <el-table-column prop="totalCount" label="商品数量" sortable>
-                </el-table-column>
-                <el-table-column prop="seoTitle" label="分类标题">
-                </el-table-column>
-                <el-table-column prop="seoKeywords" label="分类关键字">
-                </el-table-column>
-                <el-table-column prop="description" label="描述">
-                </el-table-column>
-            </el-table>
+            <section v-if="specifications.length>0">
+                <!--------------------------------工具条----------------------------------------------------->
+                <el-col :span="24" style="padding: 0px;margin: 0px">
+                    <el-form :inline="true">
+                        <el-form-item>
+                            <el-button type="primary" v-on:click="" icon="el-icon-search" size="mini" round>查询</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="success" v-on:click="" icon="el-icon-zoom-out" size="mini" round>清空查询</el-button>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="warning" @click="handleAdd" icon="el-icon-circle-plus-outline" size="mini" round>新增</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+                <!---------------------------------列表----------------------------------->
+                <el-table :data="specifications" border :header-cell-style="cellStyle" :cell-style="cellStyle"
+                          highlight-current-row v-loading="listLoading" style="width: 100%;"
+                          :row-class-name="tableRowClassName" height="555"  @selection-change="selsChange">
+                    <el-table-column type="selection" width="50">
+                    </el-table-column>
+                    <el-table-column type="index" width="50">
+                    </el-table-column>
+                    <el-table-column prop="specName" label="属性名称">
+                    </el-table-column>
+                    <el-table-column prop="productType.name" label="商品类型">
+                    </el-table-column>
+                    <el-table-column prop="isSku" label="是否是sku属性" width="120">
+                        <template scope="scope">
+                            <span v-if="scope.row.isSku==0" style="background-color: #ff1a39;padding: 2px 10px;border-radius: 3px;color: #fff">否</span>
+                            <span v-else style="background-color: #29ce57;padding: 2px 10px;border-radius: 3px;color: #fff">是</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="200">
+                        <template scope="scope">
+                            <el-button size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            <el-button type="danger" size="mini" icon="el-icon-circle-close" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </section>
         </el-main>
 
         <!-------------------------------新增/编辑--------------------------------->
-        <el-dialog title="新增/编辑" :visible.sync="productTypeVisible" width="50%" center :close-on-click-modal="false" :before-close="clearForm">
-            <el-form :model="productType" label-width="100px" :rules="productTypeRules" ref="productType">
+        <!--<el-dialog title="新增/编辑" :visible.sync="specificationVisible" width="50%" center :close-on-click-modal="false" :before-close="clearForm">
+            <el-form :model="specification" label-width="100px" :rules="specificationRules" ref="specification">
                 <el-form-item label="名称" prop="name">
                     <el-col :span="22">
                         <el-input v-model="productType.name" auto-complete="off" clearable></el-input>
@@ -64,6 +67,10 @@
                 </el-form-item>
                 <el-form-item label="父级类型">
                     <el-col :span="22">
+                        &lt;!&ndash;<el-select style="width: 100%" v-model="productType.pid" clearable filterable placeholder="请选择父级类型">
+                            <el-option v-for="item in chooseProductTypes" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>&ndash;&gt;
                         <el-input v-model="productType.pname" auto-complete="off" :disabled="true"></el-input>
                     </el-col>
                 </el-form-item>
@@ -97,7 +104,7 @@
                 <el-button @click.native="cancelForm">取消</el-button>
                 <el-button type="primary" @click.native="submitForm" :loading="submitLoading">提交</el-button>
             </div>
-        </el-dialog>
+        </el-dialog>-->
 
     </el-container>
 </template>
@@ -105,25 +112,10 @@
 <script>
     export default {
         data() {
-            var validateNumber = (rule, value, callback) => {
-                if (!value) {
-                    callback(new Error('请输入值'));
-                } else {
-                    if(!Number.isInteger(parseInt(value))) {
-                        callback(new Error('请输入数字值'));
-                    }else{
-                        if(value < 0) {
-                            callback(new Error('不能小于0'));
-                        }else {
-                            callback();
-                        }
-                    }
-                }
-            };
             return {
-                menuVisible: false,
+                sels:[],
                 listLoading: false,
-                productTypeVisible:false,
+                specificationVisible:false,
                 submitLoading:false,
                 showProductTypes: [{
                     id:0,
@@ -131,40 +123,23 @@
                     icon:"el-icon-menu",
                     children:null
                 }],
+                chooseProductTypes:[],
                 defaultProps: {
                     children: 'children',
                     label: 'name',
                 },
-                showProductType: [],
+                specifications: [],
                 deleteObject:null,
-                productType:{
+                specification:{
                     id:null,
-                    name:null,
-                    logo:null,
-                    pid:null,
-                    pname:null,
-                    description:null,
-                    sortIndex:null,
-                    totalCount:null,
-                    seoTitle:null,
-                    seoKeywords:null
+                    specName:null,
+                    productTypeId:null,
+                    isSku:null
                 },
-                productTypeRules:{
-                    name: [
-                        { required:true, message: "请输入名称", trigger: 'blur' }
-                    ],
-                    seoTitle: [
-                        { required:true, message: "请输入分类标题", trigger: 'blur' }
-                    ],
-                    seoKeywords: [
-                        { required:true, message: "请输入分类关键字", trigger: 'blur' }
-                    ],
-                    sortIndex: [
-                        { required:true, validator: validateNumber, trigger: 'blur' }
-                    ],
-                    totalCount: [
-                        { required:true, validator: validateNumber, trigger: 'blur' }
-                    ],
+                specificationRules:{
+                    specName: [
+                        { required:true, message: "请输入属性名称", trigger: 'blur' }
+                    ]
                 }
             }
         },
@@ -178,6 +153,10 @@
                     return 'warning-row';
                 }
                 return '';
+            },
+            //选中项
+            selsChange(sels) {
+                this.sels = sels;
             },
             //加载树形结构
             loadTree() {
@@ -200,57 +179,26 @@
             },
             //点击事件
             handleNodeClick(data, node, element) {
-                this.foo();
-                this.$http.get("/product/productType/getProductType/" + data.id).then((res) => {
-                    this.showProductType = [];
-                    this.showProductType = res.data;
+                this.$http.get("/product/specification/productType?productTypeId=" + data.id).then((res) => {
+                    this.specifications = res.data;
                 })
             },
 
-            rightClick(MouseEvent, object, Node, element) {
-                // 鼠标右击触发事件
-                this.menuVisible = false;
-                // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
-                this.menuVisible = true;
-                // 显示模态窗口，跳出自定义菜单栏
-                var menu = document.querySelector('#menu');
-                menu.style.left = MouseEvent.clientX + 30 + 'px';
-                // 给整个document添加监听鼠标事件，点击任何位置执行foo方法
-                document.addEventListener('click', this.foo);
-                menu.style.top = MouseEvent.clientY - 70 + 'px';
-                this.productType.pid = object.id?object.id:0;
-                this.productType.pname = object.name?object.name:null;
-                this.productType.id = object.id?object.id:null;
-                this.deleteObject = object;
-            },
-            foo() {
-                // 取消鼠标监听事件 菜单栏
-                this.menuVisible = false;
-                //关闭监听
-                document.removeEventListener('click', this.foo);
-            },
-
             clearForm(){
-                this.productType = {
+                this.specification = {
                     id:null,
-                    name:null,
-                    logo:null,
-                    pid:null,
-                    pname:null,
-                    description:null,
-                    sortIndex:null,
-                    totalCount:null,
-                    seoTitle:null,
-                    seoKeywords:null
+                    specName:null,
+                    productTypeId:null,
+                    isSku:null
                 };
-                this.$refs.productType.clearValidate();
-                this.productTypeVisible = false;
+                this.$refs.specification.clearValidate();
+                this.specificationVisible = false;
             },
             cancelForm(){
                 this.clearForm();
             },
             submitForm(){
-                this.$refs.productType.validate((valid) => {
+                this.$refs.specification.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.submitLoading = true;
@@ -269,7 +217,7 @@
                                         //失败
                                         this.$message.error(data.message);
                                     }
-                                    this.productTypeVisible = false;
+                                    this.specificationVisible = false;
                                     this.submitLoading = false;
                                     this.loadTree();
                                 });
@@ -277,14 +225,14 @@
                     }
                 });
             },
-            addProductType() {
+            handleAdd() {
                 this.$confirm('添加需要选中父级类型','确认添加吗？', {}).then(() => {
-                    this.productTypeVisible = true;
+                    this.specificationVisible = true;
                 })
             },
-            editProductType() {
+            handleEdit(index,row) {
                 this.$confirm('编辑需要选中当前类型', '确认编辑吗？',{}).then(() => {
-                    this.productTypeVisible = true;
+                    this.specificationVisible = true;
                     this.$http.get("/product/productType/"+this.productType.id).then((res)=>{
                         this.productType = res.data;
                         if(!this.productType.pid){
@@ -304,7 +252,7 @@
                 }
                 return ids;
             },
-            deleteProductType() {
+            handleDelete(index,row) {
                 this.$confirm('删除操作会删除当前类型及其子孙类型', '确认删除吗？',{}).then(() => {
                     let idss = [];
                     let ids = this.findDeleteIds(idss,this.deleteObject);
@@ -324,29 +272,6 @@
                         this.loadTree();
                     })
                 })
-            },
-
-            formatterCreateTime: function (row, column) {
-                return row.createTime ? this.formatDate(row.createTime) : ""
-            },
-
-            //时间显示转换
-            formatDate(longTime) {
-                let date = new Date(longTime);
-                let year = date.getFullYear();//2019
-                let month = date.getMonth() + 1;//月份从0开始
-                let day = date.getDate();//日
-                let hour = date.getHours();
-                let minute = date.getMinutes();
-                let second = date.getSeconds();
-                return year + "-" + this.numberFormatter(month) + "-" + this.numberFormatter(day) + " "
-                    + this.numberFormatter(hour) + ":" + this.numberFormatter(minute) + ":" + this.numberFormatter(second);
-            },
-            numberFormatter(num) {
-                if (num < 10) {
-                    return "0" + num;
-                }
-                return num;
             },
 
         },
@@ -392,5 +317,7 @@
         background-color: #1790ff;
         color: white;
     }
-
+    .el-form-item {
+        margin-bottom: 0px;
+    }
 </style>

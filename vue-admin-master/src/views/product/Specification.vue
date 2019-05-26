@@ -14,25 +14,22 @@
             </el-tree>
         </el-aside>
         <el-main>
-            <section v-if="specifications.length>0">
+            <section>
                 <!--------------------------------工具条----------------------------------------------------->
                 <el-col :span="24" style="padding: 0px;margin: 0px">
                     <el-form :inline="true">
                         <el-form-item>
-                            <el-button type="primary" v-on:click="" icon="el-icon-search" size="mini" round>查询</el-button>
+                            <el-button type="success" v-on:click="handleAdd" icon="el-icon-circle-plus-outline" size="mini" round>新增</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="success" v-on:click="" icon="el-icon-zoom-out" size="mini" round>清空查询</el-button>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="warning" @click="handleAdd" icon="el-icon-circle-plus-outline" size="mini" round>新增</el-button>
+                            <el-button type="danger" @click="handleDeleteBatch" icon="el-icon-delete" size="mini" round>批量删除</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
                 <!---------------------------------列表----------------------------------->
                 <el-table :data="specifications" border :header-cell-style="cellStyle" :cell-style="cellStyle"
                           highlight-current-row v-loading="listLoading" style="width: 100%;"
-                          :row-class-name="tableRowClassName" height="555"  @selection-change="selsChange">
+                          :row-class-name="tableRowClassName" height="555" v-if="specifications.length>0" @selection-change="selsChange">
                     <el-table-column type="selection" width="50">
                     </el-table-column>
                     <el-table-column type="index" width="50">
@@ -50,7 +47,7 @@
                     <el-table-column label="操作" width="200">
                         <template scope="scope">
                             <el-button size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                            <el-button type="danger" size="mini" icon="el-icon-circle-close" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                            <el-button type="danger" size="mini" icon="el-icon-circle-close" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -58,45 +55,24 @@
         </el-main>
 
         <!-------------------------------新增/编辑--------------------------------->
-        <!--<el-dialog title="新增/编辑" :visible.sync="specificationVisible" width="50%" center :close-on-click-modal="false" :before-close="clearForm">
-            <el-form :model="specification" label-width="100px" :rules="specificationRules" ref="specification">
-                <el-form-item label="名称" prop="name">
+        <el-dialog title="新增/编辑" :visible.sync="specificationVisible" width="40%" center :close-on-click-modal="false" :before-close="clearForm">
+            <el-form :model="specification" label-width="120px" :rules="specificationRules" ref="specification">
+                <el-form-item label="属性名称" prop="name" style="margin-bottom: 20px">
                     <el-col :span="22">
-                        <el-input v-model="productType.name" auto-complete="off" clearable></el-input>
+                        <el-input v-model="specification.specName" auto-complete="off" clearable></el-input>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="父级类型">
+                <el-form-item label="商品类型" style="margin-bottom: 20px">
                     <el-col :span="22">
-                        &lt;!&ndash;<el-select style="width: 100%" v-model="productType.pid" clearable filterable placeholder="请选择父级类型">
-                            <el-option v-for="item in chooseProductTypes" :label="item.name" :value="item.id">
+                        <el-input v-model="chooseProductType.name" auto-complete="off" :disabled="true"></el-input>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="是否是sku属性" prop="isSku">
+                    <el-col :span="22">
+                        <el-select style="width: 100%" v-model="specification.isSku" clearable filterable placeholder="请选择是否是sku属性">
+                            <el-option v-for="item in isSkus" :label="item.label" :value="item.value">
                             </el-option>
-                        </el-select>&ndash;&gt;
-                        <el-input v-model="productType.pname" auto-complete="off" :disabled="true"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="排序索引" prop="sortIndex">
-                    <el-col :span="22">
-                        <el-input v-model="productType.sortIndex" auto-complete="off" clearable></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="商品数量" prop="totalCount">
-                    <el-col :span="22">
-                        <el-input v-model="productType.totalCount" auto-complete="off" clearable></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="分类标题" prop="seoTitle">
-                    <el-col :span="22">
-                        <el-input v-model="productType.seoTitle" auto-complete="off" clearable></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="分类关键字" prop="seoKeywords">
-                    <el-col :span="22">
-                        <el-input v-model="productType.seoKeywords" auto-complete="off" clearable></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="商品描述">
-                    <el-col :span="22">
-                        <el-input type="textarea" v-model="productType.description" clearable></el-input>
+                        </el-select>
                     </el-col>
                 </el-form-item>
             </el-form>
@@ -104,7 +80,7 @@
                 <el-button @click.native="cancelForm">取消</el-button>
                 <el-button type="primary" @click.native="submitForm" :loading="submitLoading">提交</el-button>
             </div>
-        </el-dialog>-->
+        </el-dialog>
 
     </el-container>
 </template>
@@ -123,7 +99,10 @@
                     icon:"el-icon-menu",
                     children:null
                 }],
-                chooseProductTypes:[],
+                chooseProductType:{
+                    id:null,
+                    name:null
+                },
                 defaultProps: {
                     children: 'children',
                     label: 'name',
@@ -136,6 +115,16 @@
                     productTypeId:null,
                     isSku:null
                 },
+                isSkus:[
+                    {
+                        label:"是",
+                        value:1
+                    },
+                    {
+                        label:"否",
+                        value:0
+                    },
+                ],
                 specificationRules:{
                     specName: [
                         { required:true, message: "请输入属性名称", trigger: 'blur' }
@@ -179,18 +168,27 @@
             },
             //点击事件
             handleNodeClick(data, node, element) {
-                this.$http.get("/product/specification/productType?productTypeId=" + data.id).then((res) => {
+                this.chooseProductType = data;
+                this.loadSpecificationsByProductTypeId(this.chooseProductType.id);
+            },
+
+            loadSpecificationsByProductTypeId(productTypeId){
+                this.$http.get("/product/specification/productType?productTypeId=" + productTypeId).then((res) => {
                     this.specifications = res.data;
                 })
             },
 
-            clearForm(){
+            clearSpecification(){
                 this.specification = {
                     id:null,
                     specName:null,
                     productTypeId:null,
                     isSku:null
                 };
+            },
+
+            clearForm(){
+                this.clearSpecification();
                 this.$refs.specification.clearValidate();
                 this.specificationVisible = false;
             },
@@ -202,8 +200,9 @@
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.submitLoading = true;
-                            let para = Object.assign({}, this.productType);
-                            this.$http.post("/product/productType", para)
+                            let para = Object.assign({}, this.specification);
+                            para.productTypeId = this.chooseProductType.id;
+                            this.$http.post("/product/specification", para)
                                 .then((result) => {
                                     //成功后的回调
                                     let data = result.data;
@@ -219,26 +218,27 @@
                                     }
                                     this.specificationVisible = false;
                                     this.submitLoading = false;
-                                    this.loadTree();
+                                    this.loadSpecificationsByProductTypeId(this.chooseProductType.id);
                                 });
                         });
                     }
                 });
             },
             handleAdd() {
-                this.$confirm('添加需要选中父级类型','确认添加吗？', {}).then(() => {
+                this.clearSpecification();
+                if(this.chooseProductType.id==null){
+                    this.$message({
+                        type: 'warning',
+                        message: "请先选择商品类型"
+                    });
+                }else{
                     this.specificationVisible = true;
-                })
+                }
             },
             handleEdit(index,row) {
-                this.$confirm('编辑需要选中当前类型', '确认编辑吗？',{}).then(() => {
-                    this.specificationVisible = true;
-                    this.$http.get("/product/productType/"+this.productType.id).then((res)=>{
-                        this.productType = res.data;
-                        if(!this.productType.pid){
-                            this.productType.pname = "商品类型";
-                        }
-                    })
+                this.specificationVisible = true;
+                this.$http.get("/product/specification/"+row.id).then((res)=>{
+                    this.specification = res.data;
                 })
             },
 
@@ -253,10 +253,8 @@
                 return ids;
             },
             handleDelete(index,row) {
-                this.$confirm('删除操作会删除当前类型及其子孙类型', '确认删除吗？',{}).then(() => {
-                    let idss = [];
-                    let ids = this.findDeleteIds(idss,this.deleteObject);
-                    this.$http.delete("/product/productType/batch/"+ids).then((res)=>{
+                this.$confirm('删除选中的商品属性', '确认删除吗？',{}).then(() => {
+                    this.$http.delete("/product/specification/"+row.id).then((res)=>{
                         let data = res.data;
                         if(data.success){
                             this.$message({
@@ -269,10 +267,37 @@
                                 type: 'error'
                             });
                         }
-                        this.loadTree();
+                        this.loadSpecificationsByProductTypeId(this.chooseProductType.id);
                     })
                 })
             },
+            handleDeleteBatch(){
+                let ids = this.sels.map(item=>item.id);
+                if(!ids.length){
+                    this.$message({
+                        message: "请选择需要删除的商品属性",
+                        type: 'error'
+                    });
+                    return;
+                }
+                this.$confirm('删除选中的商品属性', '确认删除吗？',{}).then(() => {
+                    this.$http.delete("/product/specification/batch/"+ids).then((res)=>{
+                        let data = res.data;
+                        if(data.success){
+                            this.$message({
+                                type: 'success',
+                                message: data.message
+                            });
+                        }else{
+                            this.$message({
+                                message: data.message,
+                                type: 'error'
+                            });
+                        }
+                        this.loadSpecificationsByProductTypeId(this.chooseProductType.id);
+                    })
+                })
+            }
 
         },
         mounted() {

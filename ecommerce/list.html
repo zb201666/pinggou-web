@@ -1364,7 +1364,7 @@
                                 </div>
                                 <div class="item-info">
                                     <div class="item-price">
-                                        <em class="sale-price second-color">￥{{product.minPrice/100}}</em>
+                                        <em class="sale-price second-color">￥{{Math.round(product.minPrice*100)/100}}</em>
                                         <em class="sale-count">已售{{product.saleCount}}件</em>
                                     </div>
                                     <div class="item-name">

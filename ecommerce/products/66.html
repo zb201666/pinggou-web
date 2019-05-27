@@ -86,20 +86,14 @@
 			});
 		</script>
 		<!--导入vue和axios-->
-<script type="text/javascript" src="js/vue/vue.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script type="text/javascript" src="products/js/vue/vue.min.js"></script>
 
-<script type="text/javascript">
-    axios.defaults.baseURL = "http://127.0.0.1:9527/services"//配置前缀
-    Vue.prototype.$http = axios //给Vue这个类添加一个原型的属性,这个类的对象都能调用
-    Vue.config.productionTip = false
-</script>
+
 <title>爱购网 - 购我所爱 I LOVE BUY yoyoyo~~~</title>
 </head>
 
 <body class="pace-done">
-
-<div id="myBody">
+<div id="app">
     <!-- 站点选择 -->
     <div class="header-top">
         <div class="header-box">
@@ -387,8 +381,8 @@
                         <!-- 导航小标签 _start -->
 
                         <span class="nav-icon">
-						<img src="img/test/14766722355540.gif">
-					</span>
+							<img src="img/test/14766722355540.gif">
+						</span>
 
                         <!-- 导航小标签 _end -->
                     </li>
@@ -412,8 +406,8 @@
                         <!-- 导航小标签 _start -->
 
                         <span class="nav-icon">
-						<img src="img/test/14766722553394.gif">
-					</span>
+							<img src="img/test/14766722553394.gif">
+						</span>
 
                         <!-- 导航小标签 _end -->
                     </li>
@@ -423,8 +417,8 @@
                         <!-- 导航小标签 _start -->
 
                         <span class="nav-icon">
-						<img src="img/test/14794053929710.gif">
-					</span>
+							<img src="img/test/14794053929710.gif">
+						</span>
 
                         <!-- 导航小标签 _end -->
                     </li>
@@ -450,9 +444,9 @@
         <div class="breadcrumb clearfix">
             <a href="http://www.itsource.cn/" class="index">首页</a>
 
+            <span class="crumbs-arrow">&gt;</span>
 
-                            <span class="crumbs-arrow">&gt;</span>
-                <div class="crumbs-nav crumbs-nav0">
+                            <div class="crumbs-nav crumbs-nav0">
                     <a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
                         特产 / 食品 / 大大保健
                         <i class="icon"></i>
@@ -498,8 +492,7 @@
                                                     </ul>
                     </div>
                 </div>
-                            <span class="crumbs-arrow">&gt;</span>
-                <div class="crumbs-nav crumbs-nav0">
+                            <div class="crumbs-nav crumbs-nav0">
                     <a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
                         地方特产
                         <i class="icon"></i>
@@ -533,8 +526,7 @@
                                                     </ul>
                     </div>
                 </div>
-                            <span class="crumbs-arrow">&gt;</span>
-                <div class="crumbs-nav crumbs-nav0">
+                            <div class="crumbs-nav crumbs-nav0">
                     <a class="crumbs-title" href="http://www.itsource.cn/list.html?cat_id=27">
                         北京
                         <i class="icon"></i>
@@ -625,7 +617,9 @@
                                                     </ul>
                     </div>
                 </div>
-                        <span class="crumbs-arrow">&gt;</span>
+            
+            <span class="crumbs-arrow">&gt;</span>
+
             <span class="last">大波妹</span>
 
         </div>
@@ -636,18 +630,18 @@
                 <!-- 商品相册容器 -->
                 <div class="goodsgallery"></div>
                 <script id="SZY_SKU_IMAGES" type="text">
-				["/group1/M00/00/03/wKgBBlzkdyeAdrjgAAHS6ezmcxw631.jpg","/group1/M00/00/03/wKgrf1znABCAeOuMAAAzOpdcfmY930.jpg","/group1/M00/00/03/wKgrf1znABOAVMP3AAHS6ezmcxw055.jpg","/group1/M00/00/03/wKgrf1znAQKANLe6AAC5_w-051o417.jpg","/group1/M00/00/03/wKgrf1znAQeAZKaOAABO0BTAB0E547.jpg"]
+					["/group1/M00/00/03/wKgBBlzkdyeAdrjgAAHS6ezmcxw631.jpg","/group1/M00/00/03/wKgrf1znABCAeOuMAAAzOpdcfmY930.jpg","/group1/M00/00/03/wKgrf1znABOAVMP3AAHS6ezmcxw055.jpg","/group1/M00/00/03/wKgrf1znAQKANLe6AAC5_w-051o417.jpg","/group1/M00/00/03/wKgrf1znAQeAZKaOAABO0BTAB0E547.jpg"]
 
                 </script>
                 <script type="text/javascript">
                     let arr = $.parseJSON($("#SZY_SKU_IMAGES").html());
                     let imagesArr = [];
-                    arr.forEach(e=>{
+                    arr.forEach(e => {
                         let temp = [];
-                    temp.push("http://192.168.79.188" + e);
-                    temp.push("http://192.168.79.188" + e);
-                    temp.push("http://192.168.79.188" + e);
-                    imagesArr.push(temp);
+                        temp.push("http://192.168.79.188" + e);
+                        temp.push("http://192.168.79.188" + e);
+                        temp.push("http://192.168.79.188" + e);
+                        imagesArr.push(temp);
                     })
                     // 图片相册
                     $(".goodsgallery").goodsgallery({
@@ -710,7 +704,7 @@
                         <!-- 商品不同的价格 -->
                         <div class="show-price">
                             <span class="price">市场价</span>
-                            <font class="market-price SZY-MARKET-PRICE">￥xxx</font>
+                            <font class="market-price SZY-MARKET-PRICE">￥{{price}}</font>
                         </div>
                         <!-- 红包 -->
 
@@ -718,7 +712,7 @@
 
                             <div class="now-prices">
                                 <span class="price">售&nbsp;&nbsp;&nbsp;价</span>
-                                <strong class="p-price second-color SZY-GOODS-PRICE">￥59.90</strong>
+                                <strong class="p-price second-color SZY-GOODS-PRICE">￥{{price/100}}</strong>
                             </div>
 
                             <!--
@@ -732,9 +726,9 @@
                         <div class="prom-gift SZY-GIFT-LIST" style="display: none;">
                             <div class="dt">买即送</div>
                             <div class="dd">
-									<span class="prom-gift-label SZY-GIFT-LABEL">
-								<em>赠品</em>
-							</span>
+										<span class="prom-gift-label SZY-GIFT-LABEL">
+									<em>赠品</em>
+								</span>
 
                             </div>
                             <div>赠完为止</div>
@@ -809,9 +803,9 @@
                                 <p>
                                     累积评价
                                     <span>
-									<a id="evaluate_num" href="http://www.itsource.cn/6043.html#goods_evaluate"
-                                       class="second-color">5人评价</a>
-								</span>
+										<a id="evaluate_num" href="http://www.itsource.cn/6043.html#goods_evaluate"
+                                           class="second-color">5人评价</a>
+									</span>
                                 </p>
                             </li>
                             <li>
@@ -831,24 +825,180 @@
                     <div class="choose">
                         <!-- 商品规格 -->
 
+                                                    <dl class="attr">
+                                <dt class="dt">肤色</dt>
+                                <dd class="dd">
+                                    <ul>
+                                        <!--velocity中要对foreach获取索引-->
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item selected" data-spec-id="3140"
+                                                    data-is-default="1" @click="handleSelect(1,1)">
+                                                    <a href="javascript:void(0);" title="黄色">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">黄色</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(1,2)">
+                                                    <a href="javascript:void(0);" title="黑色">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">黑色</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(1,3)">
+                                                    <a href="javascript:void(0);" title="红色">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">红色</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+
+                                    </ul>
+                                </dd>
+                            </dl>
+                                                    <dl class="attr">
+                                <dt class="dt">年龄</dt>
+                                <dd class="dd">
+                                    <ul>
+                                        <!--velocity中要对foreach获取索引-->
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item selected" data-spec-id="3140"
+                                                    data-is-default="1" @click="handleSelect(2,1)">
+                                                    <a href="javascript:void(0);" title="萝莉">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">萝莉</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(2,2)">
+                                                    <a href="javascript:void(0);" title="御姐">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">御姐</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(2,3)">
+                                                    <a href="javascript:void(0);" title="少妇">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">少妇</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+
+                                    </ul>
+                                </dd>
+                            </dl>
+                                                    <dl class="attr">
+                                <dt class="dt">风格</dt>
+                                <dd class="dd">
+                                    <ul>
+                                        <!--velocity中要对foreach获取索引-->
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item selected" data-spec-id="3140"
+                                                    data-is-default="1" @click="handleSelect(3,1)">
+                                                    <a href="javascript:void(0);" title="闷骚">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">闷骚</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(3,2)">
+                                                    <a href="javascript:void(0);" title="明骚">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">明骚</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+                                                                                            <!-- 属性值被选中的状态 -->
+                                                <li class="goods-spec-item" data-spec-id="3140" data-is-default="1"
+                                                    @click="handleSelect(3,3)">
+                                                    <a href="javascript:void(0);" title="矜持">
+
+                                                        <img src="img/test/TB2K2cAaICO.eBjSZFzXXaRiVXa_!!1739732836(2).jpg"
+                                                             width="30" height="30" alt="">
+
+                                                        <span class="value-label">矜持</span>
+                                                    </a>
+
+                                                    <i></i></li>
+                                                　　
+                                        
+
+                                    </ul>
+                                </dd>
+                            </dl>
                         
                         <!-- 购买数量 -->
                         <dl class="amount">
                             <dt class="dt">数量</dt>
                             <dd class="dd">
-									<span class="amount-widget">
-								<input type="text" class="amount-input" value="1" data-amount-min="1"
-                                       data-amount-max="491" maxlength="8" title="请输入购买量">
-								<span class="amount-btn">
-									<span class="amount-plus">
-										<i>+</i>
-									</span>
-									<span class="amount-minus">
-										<i>-</i>
-									</span>
-									</span>
-									<span class="amount-unit">件</span>
-									</span>
+										<span class="amount-widget">
+									<input type="text" class="amount-input" value="1" data-amount-min="1"
+                                           data-amount-max="491" maxlength="8" title="请输入购买量">
+									<span class="amount-btn">
+										<span class="amount-plus">
+											<i>+</i>
+										</span>
+										<span class="amount-minus">
+											<i>-</i>
+										</span>
+										</span>
+										<span class="amount-unit">件</span>
+										</span>
                                 <em class="stock SZY-GOODS-NUMBER">库存422件</em>
 
                             </dd>
@@ -968,10 +1118,10 @@
                         <a class="bg-color shop-add " href="javascript:void(0);">
                             <i></i>
                             <span>
-					
-					收藏本店
-					
-				</span>
+
+						收藏本店
+
+					</span>
                         </a>
                     </div>
                 </div>
@@ -1162,161 +1312,161 @@
                         <ul>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=10" target="_self" title="男装"
                                    class="tree-first">男装</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=12" target="_self"
                                            title="男装">男装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=15" target="_self"
                                            title="小西装">小西装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=61" target="_self"
                                            title="棉服">棉服</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=62" target="_self"
                                            title="针织衫">针织衫</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=63" target="_self"
                                            title="夹克羊毛衫">夹克羊毛衫</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=64" target="_self"
                                            title="加绒裤">加绒裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=65" target="_self"
                                            title="真皮皮衣">真皮皮衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=69" target="_self"
                                            title="T恤">T恤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=70" target="_self"
                                            title="西服套装">西服套装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=71" target="_self"
                                            title="牛仔裤">牛仔裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=72" target="_self"
                                            title="毛呢大衣">毛呢大衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=73" target="_self"
                                            title="风衣">风衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=74" target="_self"
                                            title="仿皮皮衣">仿皮皮衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=75" target="_self"
                                            title="卫裤/运动裤">卫裤/运动裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=76" target="_self"
                                            title="短裤">短裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=77" target="_self"
                                            title="中老年男装">中老年男装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=78" target="_self"
                                            title="大码男装">大码男装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=79" target="_self"
                                            title="羊绒衫">羊绒衫</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=80" target="_self"
                                            title="工装唐装/中山装">工装唐装/中山装</a>
                                     </li>
@@ -1325,113 +1475,113 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=16" target="_self" title="女装"
                                    class="tree-first">女装</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=18" target="_self"
                                            title="休闲裤">休闲裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=19" target="_self"
                                            title="大码女装">大码女装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=20" target="_self"
                                            title="中老年女装">中老年女装</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=21" target="_self"
                                            title="潮牌">潮牌</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=22" target="_self"
                                            title="半身裙">半身裙</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=25" target="_self"
                                            title="仿皮皮衣">仿皮皮衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=26" target="_self"
                                            title="马甲">马甲</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=27" target="_self"
                                            title="正装裤">正装裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=28" target="_self"
                                            title="礼服">礼服</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=29" target="_self"
                                            title="旗袍">旗袍</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=30" target="_self"
                                            title="雪纺衫">雪纺衫</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=31" target="_self"
                                            title="吊带">吊带</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=32" target="_self"
                                            title="短裤">短裤</a>
                                     </li>
@@ -1440,89 +1590,89 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=17" target="_self" title="内衣类"
                                    class="tree-first">内衣类</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=33" target="_self"
                                            title="保暖内衣">保暖内衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=34" target="_self"
                                            title="秋衣秋裤">秋衣秋裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=35" target="_self"
                                            title="男士内裤">男士内裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=36" target="_self"
                                            title="女式内裤">女式内裤</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=37" target="_self"
                                            title="休闲棉袜">休闲棉袜</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=38" target="_self"
                                            title="商式男袜">商式男袜</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=39" target="_self"
                                            title="打底衫">打底衫</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=40" target="_self"
                                            title="睡衣">睡衣</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=41" target="_self"
                                            title="文胸">文胸</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=42" target="_self"
                                            title="打底裤袜">打底裤袜</a>
                                     </li>
@@ -1531,33 +1681,33 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=44" target="_self" title="女鞋"
                                    class="tree-first">女鞋</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=45" target="_self"
                                            title="防水台">防水台</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=47" target="_self"
                                            title="马丁靴">马丁靴</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=48" target="_self"
                                            title="雪地靴">雪地靴</a>
                                     </li>
@@ -1566,57 +1716,57 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=49" target="_self" title="男鞋"
                                    class="tree-first">男鞋</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=50" target="_self"
                                            title="商务休闲鞋">商务休闲鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=51" target="_self"
                                            title="正装鞋">正装鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=52" target="_self"
                                            title="帆布鞋">帆布鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=53" target="_self"
                                            title="增高鞋">增高鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=54" target="_self"
                                            title="沙滩鞋">沙滩鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=55" target="_self"
                                            title="传统布鞋">传统布鞋</a>
                                     </li>
@@ -1625,65 +1775,65 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=56" target="_self" title="运动鞋包"
                                    class="tree-first">运动鞋包</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=57" target="_self"
                                            title="跑步鞋">跑步鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=58" target="_self"
                                            title="休闲鞋">休闲鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=59" target="_self"
                                            title="篮球鞋">篮球鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=60" target="_self"
                                            title="帆布鞋">帆布鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=81" target="_self"
                                            title="板鞋">板鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=82" target="_self"
                                            title="拖鞋">拖鞋</a>
                                     </li>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=83" target="_self"
                                            title="训练鞋">训练鞋</a>
                                     </li>
@@ -1692,17 +1842,17 @@
                             </li>
 
                             <li class="parent_li">
-									<span>
-								<i class="icon-minus-sign"></i>
-							</span>
+										<span>
+									<i class="icon-minus-sign"></i>
+								</span>
                                 <a href="http://www.itsource.cn/shop/6/list.html?cat_id=84" target="_self" title="运动服饰"
                                    class="tree-first">运动服饰</a>
                                 <ul>
 
                                     <li>
-											<span>
-										<i class="arrow"></i>
-									</span>
+												<span>
+											<i class="arrow"></i>
+										</span>
                                         <a href="http://www.itsource.cn/shop/6/list.html?cat_id=85" target="_self"
                                            title="T恤">T恤</a>
                                     </li>
@@ -1988,21 +2138,48 @@
 
                         <div id="goods_attr_list" class="goods-detail-con goods-detail-tabs">
                             <ul class="goods-spec">
+                                                                    <li>
+                                        型号：
+                                        <span id="goods_attr_" title="中号"
+                                              class="goods-attr-value">中号</span>
+                                    </li>
+                                                                    <li>
+                                        容量：
+                                        <span id="goods_attr_" title="深"
+                                              class="goods-attr-value">深</span>
+                                    </li>
+                                                                    <li>
+                                        成色：
+                                        <span id="goods_attr_" title="全新"
+                                              class="goods-attr-value">全新</span>
+                                    </li>
+                                                                    <li>
+                                        是否支持防伪查询：
+                                        <span id="goods_attr_" title="支持"
+                                              class="goods-attr-value">支持</span>
+                                    </li>
+                                                                    <li>
+                                        售后服务：
+                                        <span id="goods_attr_" title="不支持"
+                                              class="goods-attr-value">不支持</span>
+                                    </li>
+                                                                    <li>
+                                        风格：
+                                        <span id="goods_attr_" title="风骚"
+                                              class="goods-attr-value">风骚</span>
+                                    </li>
+                                                                    <li>
+                                        适用年龄：
+                                        <span id="goods_attr_" title="25"
+                                              class="goods-attr-value">25</span>
+                                    </li>
                                                             </ul>
                         </div>
 
                         <!-- 规格参数 _end -->
                         <!-- 商品详情 _star -->
                         <div id="goods_introduce" class="goods-detail-con goods-detail-tabs">
-                            <!-- 店铺红包 -->
-
-                            <!-- 推荐商品 -->
-
-                            <!-- 商品后台上传的商品描述 -->
-                            <div class="detail-content goods-detail-content">
-                                <h1><strong style="background-color: rgb(230, 0, 0);"><em>好大的波</em></strong></h1><p><img src="http://192.168.1.6/group1/M00/00/03/wKgBBlzkdz-Aay3tAAHS6ezmcxw070.jpg"></p>
-
-                            </div>
+                            <h1><strong style="background-color: rgb(230, 0, 0);"><em>好大的波</em></strong></h1><p><img src="http://192.168.1.6/group1/M00/00/03/wKgBBlzkdz-Aay3tAAHS6ezmcxw070.jpg"></p>
                         </div>
                         <!-- 商品详情 end -->
 
@@ -2041,16 +2218,16 @@
     <script type="text/javascript" src="js/select_region.js"></script>
     <!-- 地址选择 _end -->
     <script id="SZY_GIFT_TEMPLATE" type="text">
-			<div class="prom-gift-list">
-				<a href="" title="" target="_blank">
-					<img src="" width="25" height="25" class="gift-img" />
-				</a>
-				<em class="gift-number color">×</em>
-			</div>
+				<div class="prom-gift-list">
+					<a href="" title="" target="_blank">
+						<img src="" width="25" height="25" class="gift-img" />
+					</a>
+					<em class="gift-number color">×</em>
+				</div>
 
     </script>
     <script id="SZY_SKU_LIST" type="text">
-			{"3138|3153":{"sku_id":"5996","spec_ids":"3138|3153"},"3148|3150":{"sku_id":"5997","spec_ids":"3148|3150"},"3132|3155":{"sku_id":"5998","spec_ids":"3132|3155"},"3135|3150":{"sku_id":"5999","spec_ids":"3135|3150"},"3137|3150":{"sku_id":"6000","spec_ids":"3137|3150"},"3147|3151":{"sku_id":"6001","spec_ids":"3147|3151"},"3131|3151":{"sku_id":"6002","spec_ids":"3131|3151"},"3126|3156":{"sku_id":"6003","spec_ids":"3126|3156"},"3145|3156":{"sku_id":"6004","spec_ids":"3145|3156"},"3142|3150":{"sku_id":"6005","spec_ids":"3142|3150"},"3130|3155":{"sku_id":"6006","spec_ids":"3130|3155"},"3143|3150":{"sku_id":"6007","spec_ids":"3143|3150"},"3143|3153":{"sku_id":"6008","spec_ids":"3143|3153"},"3128|3153":{"sku_id":"6009","spec_ids":"3128|3153"},"3141|3153":{"sku_id":"6010","spec_ids":"3141|3153"},"3128|3151":{"sku_id":"6011","spec_ids":"3128|3151"},"3136|3153":{"sku_id":"6012","spec_ids":"3136|3153"},"3127|3151":{"sku_id":"6013","spec_ids":"3127|3151"},"3140|3153":{"sku_id":"6014","spec_ids":"3140|3153"},"3133|3150":{"sku_id":"6015","spec_ids":"3133|3150"},"3145|3153":{"sku_id":"6016","spec_ids":"3145|3153"},"3128|3156":{"sku_id":"6017","spec_ids":"3128|3156"},"3146|3153":{"sku_id":"6018","spec_ids":"3146|3153"},"3129|3150":{"sku_id":"6019","spec_ids":"3129|3150"},"3136|3156":{"sku_id":"6020","spec_ids":"3136|3156"},"3139|3154":{"sku_id":"6021","spec_ids":"3139|3154"},"3144|3153":{"sku_id":"6022","spec_ids":"3144|3153"},"3126|3153":{"sku_id":"6023","spec_ids":"3126|3153"},"3144|3156":{"sku_id":"6024","spec_ids":"3144|3156"},"3142|3151":{"sku_id":"6025","spec_ids":"3142|3151"},"3129|3151":{"sku_id":"6026","spec_ids":"3129|3151"},"3141|3150":{"sku_id":"6027","spec_ids":"3141|3150"},"3140|3150":{"sku_id":"6028","spec_ids":"3140|3150"},"3127|3154":{"sku_id":"6029","spec_ids":"3127|3154"},"3139|3151":{"sku_id":"6030","spec_ids":"3139|3151"},"3146|3150":{"sku_id":"6031","spec_ids":"3146|3150"},"3133|3153":{"sku_id":"6032","spec_ids":"3133|3153"},"3134|3150":{"sku_id":"6033","spec_ids":"3134|3150"},"3138|3150":{"sku_id":"6034","spec_ids":"3138|3150"},"3135|3155":{"sku_id":"6035","spec_ids":"3135|3155"},"3147|3153":{"sku_id":"6036","spec_ids":"3147|3153"},"3138|3156":{"sku_id":"6037","spec_ids":"3138|3156"},"3131|3153":{"sku_id":"6038","spec_ids":"3131|3153"},"3146|3156":{"sku_id":"6039","spec_ids":"3146|3156"},"3147|3156":{"sku_id":"6040","spec_ids":"3147|3156"},"3131|3156":{"sku_id":"6041","spec_ids":"3131|3156"},"3137|3155":{"sku_id":"6042","spec_ids":"3137|3155"},"3140|3156":{"sku_id":"6043","spec_ids":"3140|3156"},"3141|3156":{"sku_id":"6044","spec_ids":"3141|3156"},"3143|3156":{"sku_id":"6045","spec_ids":"3143|3156"},"3129|3153":{"sku_id":"6046","spec_ids":"3129|3153"},"3148|3155":{"sku_id":"6047","spec_ids":"3148|3155"},"3142|3153":{"sku_id":"6048","spec_ids":"3142|3153"},"3134|3153":{"sku_id":"6049","spec_ids":"3134|3153"},"3145|3155":{"sku_id":"6050","spec_ids":"3145|3155"},"3144|3155":{"sku_id":"6051","spec_ids":"3144|3155"},"3126|3155":{"sku_id":"6052","spec_ids":"3126|3155"},"3128|3155":{"sku_id":"6053","spec_ids":"3128|3155"},"3138|3152":{"sku_id":"6054","spec_ids":"3138|3152"},"3136|3155":{"sku_id":"6055","spec_ids":"3136|3155"},"3140|3152":{"sku_id":"6056","spec_ids":"3140|3152"},"3146|3152":{"sku_id":"6057","spec_ids":"3146|3152"},"3149|3154":{"sku_id":"6058","spec_ids":"3149|3154"},"3137|3156":{"sku_id":"6059","spec_ids":"3137|3156"},"3135|3156":{"sku_id":"6060","spec_ids":"3135|3156"},"3148|3156":{"sku_id":"6061","spec_ids":"3148|3156"},"3130|3150":{"sku_id":"6062","spec_ids":"3130|3150"},"3131|3155":{"sku_id":"6063","spec_ids":"3131|3155"},"3132|3150":{"sku_id":"6064","spec_ids":"3132|3150"},"3139|3156":{"sku_id":"6065","spec_ids":"3139|3156"},"3147|3155":{"sku_id":"6066","spec_ids":"3147|3155"},"3126|3151":{"sku_id":"6067","spec_ids":"3126|3151"},"3145|3151":{"sku_id":"6068","spec_ids":"3145|3151"},"3136|3151":{"sku_id":"6069","spec_ids":"3136|3151"},"3144|3151":{"sku_id":"6070","spec_ids":"3144|3151"},"3137|3152":{"sku_id":"6071","spec_ids":"3137|3152"},"3135|3152":{"sku_id":"6072","spec_ids":"3135|3152"},"3132|3156":{"sku_id":"6073","spec_ids":"3132|3156"},"3130|3156":{"sku_id":"6074","spec_ids":"3130|3156"},"3143|3152":{"sku_id":"6075","spec_ids":"3143|3152"},"3141|3152":{"sku_id":"6076","spec_ids":"3141|3152"},"3149|3155":{"sku_id":"6077","spec_ids":"3149|3155"},"3149|3151":{"sku_id":"6078","spec_ids":"3149|3151"},"3139|3152":{"sku_id":"6079","spec_ids":"3139|3152"},"3143|3151":{"sku_id":"6080","spec_ids":"3143|3151"},"3132|3152":{"sku_id":"6081","spec_ids":"3132|3152"},"3140|3151":{"sku_id":"6082","spec_ids":"3140|3151"},"3141|3151":{"sku_id":"6083","spec_ids":"3141|3151"},"3146|3151":{"sku_id":"6084","spec_ids":"3146|3151"},"3133|3154":{"sku_id":"6085","spec_ids":"3133|3154"},"3130|3152":{"sku_id":"6086","spec_ids":"3130|3152"},"3133|3151":{"sku_id":"6087","spec_ids":"3133|3151"},"3134|3152":{"sku_id":"6088","spec_ids":"3134|3152"},"3136|3152":{"sku_id":"6089","spec_ids":"3136|3152"},"3128|3152":{"sku_id":"6090","spec_ids":"3128|3152"},"3126|3152":{"sku_id":"6091","spec_ids":"3126|3152"},"3144|3152":{"sku_id":"6092","spec_ids":"3144|3152"},"3134|3156":{"sku_id":"6093","spec_ids":"3134|3156"},"3148|3152":{"sku_id":"6094","spec_ids":"3148|3152"},"3147|3152":{"sku_id":"6095","spec_ids":"3147|3152"},"3131|3152":{"sku_id":"6096","spec_ids":"3131|3152"},"3149|3156":{"sku_id":"6097","spec_ids":"3149|3156"},"3137|3154":{"sku_id":"6098","spec_ids":"3137|3154"},"3129|3155":{"sku_id":"6099","spec_ids":"3129|3155"},"3137|3151":{"sku_id":"6100","spec_ids":"3137|3151"},"3135|3154":{"sku_id":"6101","spec_ids":"3135|3154"},"3142|3155":{"sku_id":"6102","spec_ids":"3142|3155"},"3148|3154":{"sku_id":"6103","spec_ids":"3148|3154"},"3149|3153":{"sku_id":"6104","spec_ids":"3149|3153"},"3134|3154":{"sku_id":"6105","spec_ids":"3134|3154"},"3148|3151":{"sku_id":"6106","spec_ids":"3148|3151"},"3130|3154":{"sku_id":"6107","spec_ids":"3130|3154"},"3135|3151":{"sku_id":"6108","spec_ids":"3135|3151"},"3132|3154":{"sku_id":"6109","spec_ids":"3132|3154"},"3127|3153":{"sku_id":"6110","spec_ids":"3127|3153"},"3145|3152":{"sku_id":"6111","spec_ids":"3145|3152"},"3133|3152":{"sku_id":"6112","spec_ids":"3133|3152"},"3127|3152":{"sku_id":"6113","spec_ids":"3127|3152"},"3132|3151":{"sku_id":"6114","spec_ids":"3132|3151"},"3130|3151":{"sku_id":"6115","spec_ids":"3130|3151"},"3130|3153":{"sku_id":"6116","spec_ids":"3130|3153"},"3149|3150":{"sku_id":"6117","spec_ids":"3149|3150"},"3132|3153":{"sku_id":"6118","spec_ids":"3132|3153"},"3142|3154":{"sku_id":"6119","spec_ids":"3142|3154"},"3147|3154":{"sku_id":"6120","spec_ids":"3147|3154"},"3131|3154":{"sku_id":"6121","spec_ids":"3131|3154"},"3129|3154":{"sku_id":"6122","spec_ids":"3129|3154"},"3139|3150":{"sku_id":"6123","spec_ids":"3139|3150"},"3127|3155":{"sku_id":"6124","spec_ids":"3127|3155"},"3139|3153":{"sku_id":"6125","spec_ids":"3139|3153"},"3127|3150":{"sku_id":"6126","spec_ids":"3127|3150"},"3146|3155":{"sku_id":"6127","spec_ids":"3146|3155"},"3140|3155":{"sku_id":"6128","spec_ids":"3140|3155"},"3138|3155":{"sku_id":"6129","spec_ids":"3138|3155"},"3134|3151":{"sku_id":"6130","spec_ids":"3134|3151"},"3141|3155":{"sku_id":"6131","spec_ids":"3141|3155"},"3149|3152":{"sku_id":"6132","spec_ids":"3149|3152"},"3143|3155":{"sku_id":"6133","spec_ids":"3143|3155"},"3136|3154":{"sku_id":"6134","spec_ids":"3136|3154"},"3144|3154":{"sku_id":"6135","spec_ids":"3144|3154"},"3126|3154":{"sku_id":"6136","spec_ids":"3126|3154"},"3131|3150":{"sku_id":"6137","spec_ids":"3131|3150"},"3127|3156":{"sku_id":"6138","spec_ids":"3127|3156"},"3145|3154":{"sku_id":"6139","spec_ids":"3145|3154"},"3147|3150":{"sku_id":"6140","spec_ids":"3147|3150"},"3129|3156":{"sku_id":"6141","spec_ids":"3129|3156"},"3128|3154":{"sku_id":"6142","spec_ids":"3128|3154"},"3133|3155":{"sku_id":"6143","spec_ids":"3133|3155"},"3142|3152":{"sku_id":"6144","spec_ids":"3142|3152"},"3139|3155":{"sku_id":"6145","spec_ids":"3139|3155"},"3142|3156":{"sku_id":"6146","spec_ids":"3142|3156"},"3129|3152":{"sku_id":"6147","spec_ids":"3129|3152"},"3143|3154":{"sku_id":"6148","spec_ids":"3143|3154"},"3134|3155":{"sku_id":"6149","spec_ids":"3134|3155"},"3145|3150":{"sku_id":"6150","spec_ids":"3145|3150"},"3148|3153":{"sku_id":"6151","spec_ids":"3148|3153"},"3126|3150":{"sku_id":"6152","spec_ids":"3126|3150"},"3138|3154":{"sku_id":"6153","spec_ids":"3138|3154"},"3138|3151":{"sku_id":"6154","spec_ids":"3138|3151"},"3144|3150":{"sku_id":"6155","spec_ids":"3144|3150"},"3133|3156":{"sku_id":"6156","spec_ids":"3133|3156"},"3136|3150":{"sku_id":"6157","spec_ids":"3136|3150"},"3128|3150":{"sku_id":"6158","spec_ids":"3128|3150"},"3135|3153":{"sku_id":"6159","spec_ids":"3135|3153"},"3146|3154":{"sku_id":"6160","spec_ids":"3146|3154"},"3137|3153":{"sku_id":"6161","spec_ids":"3137|3153"},"3141|3154":{"sku_id":"6162","spec_ids":"3141|3154"},"3140|3154":{"sku_id":"6163","spec_ids":"3140|3154"}}
+				{"3138|3153":{"sku_id":"5996","spec_ids":"3138|3153"},"3148|3150":{"sku_id":"5997","spec_ids":"3148|3150"},"3132|3155":{"sku_id":"5998","spec_ids":"3132|3155"},"3135|3150":{"sku_id":"5999","spec_ids":"3135|3150"},"3137|3150":{"sku_id":"6000","spec_ids":"3137|3150"},"3147|3151":{"sku_id":"6001","spec_ids":"3147|3151"},"3131|3151":{"sku_id":"6002","spec_ids":"3131|3151"},"3126|3156":{"sku_id":"6003","spec_ids":"3126|3156"},"3145|3156":{"sku_id":"6004","spec_ids":"3145|3156"},"3142|3150":{"sku_id":"6005","spec_ids":"3142|3150"},"3130|3155":{"sku_id":"6006","spec_ids":"3130|3155"},"3143|3150":{"sku_id":"6007","spec_ids":"3143|3150"},"3143|3153":{"sku_id":"6008","spec_ids":"3143|3153"},"3128|3153":{"sku_id":"6009","spec_ids":"3128|3153"},"3141|3153":{"sku_id":"6010","spec_ids":"3141|3153"},"3128|3151":{"sku_id":"6011","spec_ids":"3128|3151"},"3136|3153":{"sku_id":"6012","spec_ids":"3136|3153"},"3127|3151":{"sku_id":"6013","spec_ids":"3127|3151"},"3140|3153":{"sku_id":"6014","spec_ids":"3140|3153"},"3133|3150":{"sku_id":"6015","spec_ids":"3133|3150"},"3145|3153":{"sku_id":"6016","spec_ids":"3145|3153"},"3128|3156":{"sku_id":"6017","spec_ids":"3128|3156"},"3146|3153":{"sku_id":"6018","spec_ids":"3146|3153"},"3129|3150":{"sku_id":"6019","spec_ids":"3129|3150"},"3136|3156":{"sku_id":"6020","spec_ids":"3136|3156"},"3139|3154":{"sku_id":"6021","spec_ids":"3139|3154"},"3144|3153":{"sku_id":"6022","spec_ids":"3144|3153"},"3126|3153":{"sku_id":"6023","spec_ids":"3126|3153"},"3144|3156":{"sku_id":"6024","spec_ids":"3144|3156"},"3142|3151":{"sku_id":"6025","spec_ids":"3142|3151"},"3129|3151":{"sku_id":"6026","spec_ids":"3129|3151"},"3141|3150":{"sku_id":"6027","spec_ids":"3141|3150"},"3140|3150":{"sku_id":"6028","spec_ids":"3140|3150"},"3127|3154":{"sku_id":"6029","spec_ids":"3127|3154"},"3139|3151":{"sku_id":"6030","spec_ids":"3139|3151"},"3146|3150":{"sku_id":"6031","spec_ids":"3146|3150"},"3133|3153":{"sku_id":"6032","spec_ids":"3133|3153"},"3134|3150":{"sku_id":"6033","spec_ids":"3134|3150"},"3138|3150":{"sku_id":"6034","spec_ids":"3138|3150"},"3135|3155":{"sku_id":"6035","spec_ids":"3135|3155"},"3147|3153":{"sku_id":"6036","spec_ids":"3147|3153"},"3138|3156":{"sku_id":"6037","spec_ids":"3138|3156"},"3131|3153":{"sku_id":"6038","spec_ids":"3131|3153"},"3146|3156":{"sku_id":"6039","spec_ids":"3146|3156"},"3147|3156":{"sku_id":"6040","spec_ids":"3147|3156"},"3131|3156":{"sku_id":"6041","spec_ids":"3131|3156"},"3137|3155":{"sku_id":"6042","spec_ids":"3137|3155"},"3140|3156":{"sku_id":"6043","spec_ids":"3140|3156"},"3141|3156":{"sku_id":"6044","spec_ids":"3141|3156"},"3143|3156":{"sku_id":"6045","spec_ids":"3143|3156"},"3129|3153":{"sku_id":"6046","spec_ids":"3129|3153"},"3148|3155":{"sku_id":"6047","spec_ids":"3148|3155"},"3142|3153":{"sku_id":"6048","spec_ids":"3142|3153"},"3134|3153":{"sku_id":"6049","spec_ids":"3134|3153"},"3145|3155":{"sku_id":"6050","spec_ids":"3145|3155"},"3144|3155":{"sku_id":"6051","spec_ids":"3144|3155"},"3126|3155":{"sku_id":"6052","spec_ids":"3126|3155"},"3128|3155":{"sku_id":"6053","spec_ids":"3128|3155"},"3138|3152":{"sku_id":"6054","spec_ids":"3138|3152"},"3136|3155":{"sku_id":"6055","spec_ids":"3136|3155"},"3140|3152":{"sku_id":"6056","spec_ids":"3140|3152"},"3146|3152":{"sku_id":"6057","spec_ids":"3146|3152"},"3149|3154":{"sku_id":"6058","spec_ids":"3149|3154"},"3137|3156":{"sku_id":"6059","spec_ids":"3137|3156"},"3135|3156":{"sku_id":"6060","spec_ids":"3135|3156"},"3148|3156":{"sku_id":"6061","spec_ids":"3148|3156"},"3130|3150":{"sku_id":"6062","spec_ids":"3130|3150"},"3131|3155":{"sku_id":"6063","spec_ids":"3131|3155"},"3132|3150":{"sku_id":"6064","spec_ids":"3132|3150"},"3139|3156":{"sku_id":"6065","spec_ids":"3139|3156"},"3147|3155":{"sku_id":"6066","spec_ids":"3147|3155"},"3126|3151":{"sku_id":"6067","spec_ids":"3126|3151"},"3145|3151":{"sku_id":"6068","spec_ids":"3145|3151"},"3136|3151":{"sku_id":"6069","spec_ids":"3136|3151"},"3144|3151":{"sku_id":"6070","spec_ids":"3144|3151"},"3137|3152":{"sku_id":"6071","spec_ids":"3137|3152"},"3135|3152":{"sku_id":"6072","spec_ids":"3135|3152"},"3132|3156":{"sku_id":"6073","spec_ids":"3132|3156"},"3130|3156":{"sku_id":"6074","spec_ids":"3130|3156"},"3143|3152":{"sku_id":"6075","spec_ids":"3143|3152"},"3141|3152":{"sku_id":"6076","spec_ids":"3141|3152"},"3149|3155":{"sku_id":"6077","spec_ids":"3149|3155"},"3149|3151":{"sku_id":"6078","spec_ids":"3149|3151"},"3139|3152":{"sku_id":"6079","spec_ids":"3139|3152"},"3143|3151":{"sku_id":"6080","spec_ids":"3143|3151"},"3132|3152":{"sku_id":"6081","spec_ids":"3132|3152"},"3140|3151":{"sku_id":"6082","spec_ids":"3140|3151"},"3141|3151":{"sku_id":"6083","spec_ids":"3141|3151"},"3146|3151":{"sku_id":"6084","spec_ids":"3146|3151"},"3133|3154":{"sku_id":"6085","spec_ids":"3133|3154"},"3130|3152":{"sku_id":"6086","spec_ids":"3130|3152"},"3133|3151":{"sku_id":"6087","spec_ids":"3133|3151"},"3134|3152":{"sku_id":"6088","spec_ids":"3134|3152"},"3136|3152":{"sku_id":"6089","spec_ids":"3136|3152"},"3128|3152":{"sku_id":"6090","spec_ids":"3128|3152"},"3126|3152":{"sku_id":"6091","spec_ids":"3126|3152"},"3144|3152":{"sku_id":"6092","spec_ids":"3144|3152"},"3134|3156":{"sku_id":"6093","spec_ids":"3134|3156"},"3148|3152":{"sku_id":"6094","spec_ids":"3148|3152"},"3147|3152":{"sku_id":"6095","spec_ids":"3147|3152"},"3131|3152":{"sku_id":"6096","spec_ids":"3131|3152"},"3149|3156":{"sku_id":"6097","spec_ids":"3149|3156"},"3137|3154":{"sku_id":"6098","spec_ids":"3137|3154"},"3129|3155":{"sku_id":"6099","spec_ids":"3129|3155"},"3137|3151":{"sku_id":"6100","spec_ids":"3137|3151"},"3135|3154":{"sku_id":"6101","spec_ids":"3135|3154"},"3142|3155":{"sku_id":"6102","spec_ids":"3142|3155"},"3148|3154":{"sku_id":"6103","spec_ids":"3148|3154"},"3149|3153":{"sku_id":"6104","spec_ids":"3149|3153"},"3134|3154":{"sku_id":"6105","spec_ids":"3134|3154"},"3148|3151":{"sku_id":"6106","spec_ids":"3148|3151"},"3130|3154":{"sku_id":"6107","spec_ids":"3130|3154"},"3135|3151":{"sku_id":"6108","spec_ids":"3135|3151"},"3132|3154":{"sku_id":"6109","spec_ids":"3132|3154"},"3127|3153":{"sku_id":"6110","spec_ids":"3127|3153"},"3145|3152":{"sku_id":"6111","spec_ids":"3145|3152"},"3133|3152":{"sku_id":"6112","spec_ids":"3133|3152"},"3127|3152":{"sku_id":"6113","spec_ids":"3127|3152"},"3132|3151":{"sku_id":"6114","spec_ids":"3132|3151"},"3130|3151":{"sku_id":"6115","spec_ids":"3130|3151"},"3130|3153":{"sku_id":"6116","spec_ids":"3130|3153"},"3149|3150":{"sku_id":"6117","spec_ids":"3149|3150"},"3132|3153":{"sku_id":"6118","spec_ids":"3132|3153"},"3142|3154":{"sku_id":"6119","spec_ids":"3142|3154"},"3147|3154":{"sku_id":"6120","spec_ids":"3147|3154"},"3131|3154":{"sku_id":"6121","spec_ids":"3131|3154"},"3129|3154":{"sku_id":"6122","spec_ids":"3129|3154"},"3139|3150":{"sku_id":"6123","spec_ids":"3139|3150"},"3127|3155":{"sku_id":"6124","spec_ids":"3127|3155"},"3139|3153":{"sku_id":"6125","spec_ids":"3139|3153"},"3127|3150":{"sku_id":"6126","spec_ids":"3127|3150"},"3146|3155":{"sku_id":"6127","spec_ids":"3146|3155"},"3140|3155":{"sku_id":"6128","spec_ids":"3140|3155"},"3138|3155":{"sku_id":"6129","spec_ids":"3138|3155"},"3134|3151":{"sku_id":"6130","spec_ids":"3134|3151"},"3141|3155":{"sku_id":"6131","spec_ids":"3141|3155"},"3149|3152":{"sku_id":"6132","spec_ids":"3149|3152"},"3143|3155":{"sku_id":"6133","spec_ids":"3143|3155"},"3136|3154":{"sku_id":"6134","spec_ids":"3136|3154"},"3144|3154":{"sku_id":"6135","spec_ids":"3144|3154"},"3126|3154":{"sku_id":"6136","spec_ids":"3126|3154"},"3131|3150":{"sku_id":"6137","spec_ids":"3131|3150"},"3127|3156":{"sku_id":"6138","spec_ids":"3127|3156"},"3145|3154":{"sku_id":"6139","spec_ids":"3145|3154"},"3147|3150":{"sku_id":"6140","spec_ids":"3147|3150"},"3129|3156":{"sku_id":"6141","spec_ids":"3129|3156"},"3128|3154":{"sku_id":"6142","spec_ids":"3128|3154"},"3133|3155":{"sku_id":"6143","spec_ids":"3133|3155"},"3142|3152":{"sku_id":"6144","spec_ids":"3142|3152"},"3139|3155":{"sku_id":"6145","spec_ids":"3139|3155"},"3142|3156":{"sku_id":"6146","spec_ids":"3142|3156"},"3129|3152":{"sku_id":"6147","spec_ids":"3129|3152"},"3143|3154":{"sku_id":"6148","spec_ids":"3143|3154"},"3134|3155":{"sku_id":"6149","spec_ids":"3134|3155"},"3145|3150":{"sku_id":"6150","spec_ids":"3145|3150"},"3148|3153":{"sku_id":"6151","spec_ids":"3148|3153"},"3126|3150":{"sku_id":"6152","spec_ids":"3126|3150"},"3138|3154":{"sku_id":"6153","spec_ids":"3138|3154"},"3138|3151":{"sku_id":"6154","spec_ids":"3138|3151"},"3144|3150":{"sku_id":"6155","spec_ids":"3144|3150"},"3133|3156":{"sku_id":"6156","spec_ids":"3133|3156"},"3136|3150":{"sku_id":"6157","spec_ids":"3136|3150"},"3128|3150":{"sku_id":"6158","spec_ids":"3128|3150"},"3135|3153":{"sku_id":"6159","spec_ids":"3135|3153"},"3146|3154":{"sku_id":"6160","spec_ids":"3146|3154"},"3137|3153":{"sku_id":"6161","spec_ids":"3137|3153"},"3141|3154":{"sku_id":"6162","spec_ids":"3141|3154"},"3140|3154":{"sku_id":"6163","spec_ids":"3140|3154"}}
 
     </script>
     <!-- 获取当前地址 -->
@@ -2310,20 +2487,14 @@
                     getSkuInfo(sku_id, is_default, function (sku) {
                         setSkuInfo(sku);
                         // 变更地址栏信息
-                        History.replaceState(null, '', sku_id + '.html');
+                        //History.replaceState(null, '', sku_id + '.html');
                         $("title").html(sku.sku_name);
                     });
                 } else {
                     // 变更地址栏信息
-                    History.replaceState(null, '', 'goods-429.html');
+                    //History.replaceState(null, '', 'goods-429.html');
                     $("title").html("欧比森保暖白衬衫男士长袖修身韩版纯色加绒加厚商务衬衣男装寸衫");
                     setSkuInfo(false);
-                }
-            }).hover(function () {
-                $(this).addClass("selected");
-            }, function () {
-                if ($(this).find("i").size() == 0) {
-                    $(this).removeClass("selected");
                 }
             });
 
@@ -2432,6 +2603,55 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        //固定滚动条位置
+        $.fixedScorll.read("SZY_GOODS_SCORLL");
+
+        $().ready(function () {
+
+            var desc_container = $(".goods-detail-content");
+            var evaluate_container = $("#goods_evaluate");
+
+            function load() {
+
+                // // 加载商品详情
+                // if(!$("body").data("loading-goods-desc")) {
+                // 	// 计算高度
+                // 	if($(document).scrollTop() >= $(desc_container).offset().top - $(window).height()) {
+                // 		$("body").data("loading-goods-desc", true);
+                // 		$.get("js/data/goods-desc.json", {
+                // 			sku_id: "6163"
+                // 		}, function(result) {
+                // 			$(desc_container).html(result.pc_desc);
+                // 		}, "json");
+                // 	}
+                // }
+                // 评论
+                /*if(!$("body").data("loading-goods-comment")) {
+                    // 计算高度
+                    if($(document).scrollTop() >= $(evaluate_container).offset().top - $(window).height()) {
+                        $("body").data("loading-goods-comment", true);
+                        $.get('js/data/goods-comment.json', {
+                            sku_id: "6163",
+                            output: 1
+                        }, function(result) {
+                            if(result.code == 0) {
+                                $(evaluate_container).html(result.data);
+                            }
+                        }, "json");
+                    }
+                }*/
+            }
+
+            load();
+
+            // 加载商品详情和评论
+            $(window).scroll(function () {
+                load();
+            });
+
+        });
+    </script>
     <!-- 结束：主要区域内容-->
 
     <!-- 站点底部-->
@@ -2481,10 +2701,10 @@
                                             </div>
                                         </div>
                                         <p class="m-t-10">
-												<span class="prev-login">
-					上次登录时间：
-					<span class="SZY-USER-LAST-LOGIN"></span>
-												</span>
+													<span class="prev-login">
+						上次登录时间：
+						<span class="SZY-USER-LAST-LOGIN"></span>
+													</span>
                                             <a href="user.html" class="btn account-btn" target="_blank">个人中心</a>
                                             <a href="user/order.html" class="btn order-btn" target="_blank">订单中心</a>
                                         </p>
@@ -2499,17 +2719,17 @@
                                 <i class="cart"></i>
                                 <div class="span">购物车</div>
                                 <span class="ECS_CARTINFO">
-								<span class="cart_num SZY-CART-COUNT">0</span>
-									<div class="sidebar-cart-box">
-										<h3 class="sidebar-panel-header">
-										<a href="javascript:void(0);" class="title">
-											<i class="cart-icon"></i>
-											<em class="title">购物车</em>
-										</a>
-										<span class="close-panel"></span>
-									</h3>
-									</div>
-									</span>
+									<span class="cart_num SZY-CART-COUNT">0</span>
+										<div class="sidebar-cart-box">
+											<h3 class="sidebar-panel-header">
+											<a href="javascript:void(0);" class="title">
+												<i class="cart-icon"></i>
+												<em class="title">购物车</em>
+											</a>
+											<span class="close-panel"></span>
+										</h3>
+										</div>
+										</span>
                             </div>
                         </li>
                         <li class="sidebar-tabs">
@@ -2708,247 +2928,6 @@
     </div>
     <!-- 右侧边栏 _end -->
 
-    <!-- 底部 _start-->
-
-    <div class="site-footer">
-
-        <div class="footer-service">
-            <div align="center"><img src="img/test/14778844965714.jpg" alt="" height="85" width="1210"></div>
-        </div>
-
-        <div class="footer-related">
-
-            <div class="footer-article w1210">
-                <dl class="col-article col-article-spe">
-                    <dt class="phone color">028-86261949</dt>
-                    <dd class="email color">master@itsrouce.cn</dd>
-
-                    <dd class="customer">
-                        <span>联系我们</span>
-
-                        <a href="#" target="_blank">
-                            <em class="icon-ww"></em>
-                        </a>
-
-                        <a href="#" target="_blank">
-                            <em class="icon-qq"></em>
-                        </a>
-
-                    </dd>
-
-                </dl>
-                <!---->
-                <dl class="col-article col-article-first">
-                    <dt>新手上路</dt>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">购物流程</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">订单查询</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">常见问题</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">在线客服</a>
-
-                    </dd>
-                    <!-- -->
-                </dl>
-                <!---->
-                <dl class="col-article col-article-first">
-                    <dt>支付方式</dt>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">网上支付</a>
-
-                    </dd>
-                    <!-- -->
-                </dl>
-                <!---->
-                <dl class="col-article col-article-first">
-                    <dt>配送服务</dt>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">配送范围及收费标准</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">订单进度查询</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">验货与签收</a>
-
-                    </dd>
-                    <!-- -->
-                </dl>
-                <!---->
-                <dl class="col-article col-article-first">
-                    <dt>售后服务</dt>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">退换货政策</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">退换货流程</a>
-
-                    </dd>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">退款说明</a>
-
-                    </dd>
-                    <!-- -->
-                </dl>
-                <!---->
-                <dl class="col-article col-article-first">
-                    <dt>商家合作</dt>
-
-                    <dd>
-
-                        <a rel="nofollow" href="#" target="_blank">商家入驻</a>
-
-                    </dd>
-                    <!-- -->
-                </dl>
-                <!---->
-
-                <div class="QR-code fr">
-
-                    <ul class="tabs">
-
-                    </ul>
-                    <div class="code-content">
-
-                        <div class="code ">
-                            <img src="img/test/mall_wx_qrcode_0.jpg">
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-        <div class="footer-desc-copyright">
-
-            <p class="footer-ecscinfo">
-                <a href="#">首页</a>
-                |
-
-                <a href="#">隐私保护</a>
-                |
-
-                <a href="#">联系我们</a>
-                |
-
-                <a href="#">免责条款</a>
-                |
-
-                <a href="#">公司简介</a>
-                |
-
-                <a href="#">意见反馈</a>
-
-                |
-                <a rel="nofollow" target="_blank" href="#">会员登录</a>
-                |
-                <a rel="nofollow" target="_blank" href="http://bbs.itsource.cn/">会员论坛</a>
-                |
-                <a href="javascript:;" rel="nofollow">客服热线028-86261949</a>
-            </p>
-            <p class="footer-otherlink">
-                <a title="源码商城" target="_blank" href="http://itsource.cn">源码商城</a>
-
-                |
-
-                <a title="菁鱼课堂" target="_blank" href="http://www.itsource.cn">菁鱼课堂</a>
-
-                |
-
-                <a title="资讯速递" target="_blank" href="http://www.itsource.cn">资讯速递</a>
-
-                |
-
-                <a title="快递查询" target="_blank" href="http://m.kuaidi100.com">快递查询</a>
-
-                |
-
-                <a title="论坛" target="_blank" href="http://bbs.itsource.com/forum.php">会员论坛</a>
-
-                |
-
-                <a title="源代码教育咨询有限公司" target="_blank" href="http://www.itsource.cn">源代码教育咨询有限公司</a>
-
-            </p>
-
-            <p class="footer-beian"> ICP备案证书号:
-                <a rel="nofollow" target="_blank" href="#">蜀ICP备88888888号-1</a>
-                <a rel="nofollow" target="_blank" href="#"><i></i>蜀公网安备 45323525326664号</a>
-            </p>
-            <p class="footer-Copyright">Copyright &copy; 2017
-                <a target="_blank" style="margin:0;padding:0;" href="http://www.saodangzu.com/">itsource.cn</a> All
-                Rights Reserved. </p>
-            <p>&nbsp;</p>
-
-            <p class="footer-fp-img">
-                <a target="_blank" href="#"><img src="img/test/kxwz.png"></a>
-                <a target="_blank" href="#"><img src="img/test/smyz.png"></a>
-                <a target="_blank" href="#"><img src="img/test/cxyz.jpg"></a>
-                <a target="_blank" href="#"><img src="img/test/hyyz.png"></a>
-                <a target="_blank" href="#"><img src="img/test/jpfw.png"></a>
-            </p>
-        </div>
-
-    </div>
-    <!-- 第三方流量统计 -->
-    <div style="display: none;"></div>
-    <!-- 底部 _end-->
-
-    <script type="text/javascript" src="js/jquery.fly.min.js"></script>
-    <script type="text/javascript" src="js/szy.cart.js"></script>
-    <!--[if lte IE 9]>
-    <script type="text/javascript" src="/js/requestAnimationFrame.js"></script>
-    <![endif]-->
-    <script type="text/javascript">
-        $().ready(function () {
-            $.cartbox.count = "0";
-            // 缓载图片
-            $("img").lazyload({
-                skip_invisible: false,
-                effect: 'fadeIn',
-                failure_limit: 20,
-                threshold: 200
-            });
-
-        });
-    </script>
-
-    <!-- 站点底部-->
         <!-- 底部 _start-->
 
 		<div class="site-footer">
@@ -3185,37 +3164,42 @@
 				});
 
 			});
-		</script>
-</div>
-<script id="skusDatas" type="text">
-                '$model.skus'
-
-</script>
+		</script></div>
 <script type="text/javascript">
     new Vue({
-        el: "#myBody",
-        data() {
-            return {
-                indexs: [],
-                skuDatas: []
-            }
+        el: "#app",
+        data: {
+            skus:[{"availableStock":10,"createTime":1558526212171,"id":175,"price":1000,"productId":66,"skuIndex":"0_0_0","skuName":"黄色萝莉闷骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"萝莉\",\"风格\":\"闷骚\"}","updateTime":1558526212171},{"availableStock":60,"createTime":1558526212183,"id":176,"price":3450,"productId":66,"skuIndex":"0_0_1","skuName":"黄色萝莉明骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"萝莉\",\"风格\":\"明骚\"}","updateTime":1558526212183},{"availableStock":340,"createTime":1558526212189,"id":177,"price":6780,"productId":66,"skuIndex":"0_0_2","skuName":"黄色萝莉矜持","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"萝莉\",\"风格\":\"矜持\"}","updateTime":1558526212189},{"availableStock":13,"createTime":1558526212194,"id":178,"price":5673,"productId":66,"skuIndex":"0_1_0","skuName":"黄色御姐闷骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"御姐\",\"风格\":\"闷骚\"}","updateTime":1558526212194},{"availableStock":60,"createTime":1558526212201,"id":179,"price":5673,"productId":66,"skuIndex":"0_1_1","skuName":"黄色御姐明骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"御姐\",\"风格\":\"明骚\"}","updateTime":1558526212201},{"availableStock":60,"createTime":1558526212207,"id":180,"price":5673,"productId":66,"skuIndex":"0_1_2","skuName":"黄色御姐矜持","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"御姐\",\"风格\":\"矜持\"}","updateTime":1558526212207},{"availableStock":60,"createTime":1558526212212,"id":181,"price":5673,"productId":66,"skuIndex":"0_2_0","skuName":"黄色少妇闷骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"少妇\",\"风格\":\"闷骚\"}","updateTime":1558526212212},{"availableStock":60,"createTime":1558526212219,"id":182,"price":5673,"productId":66,"skuIndex":"0_2_1","skuName":"黄色少妇明骚","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"少妇\",\"风格\":\"明骚\"}","updateTime":1558526212219},{"availableStock":0,"createTime":1558526212224,"id":183,"price":0,"productId":66,"skuIndex":"0_2_2","skuName":"黄色少妇矜持","skuProperties":"{\"肤色\":\"黄色\",\"年龄\":\"少妇\",\"风格\":\"矜持\"}","updateTime":1558526212224},{"availableStock":0,"createTime":1558526212229,"id":184,"price":0,"productId":66,"skuIndex":"1_0_0","skuName":"黑色萝莉闷骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"萝莉\",\"风格\":\"闷骚\"}","updateTime":1558526212229},{"availableStock":0,"createTime":1558526212233,"id":185,"price":0,"productId":66,"skuIndex":"1_0_1","skuName":"黑色萝莉明骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"萝莉\",\"风格\":\"明骚\"}","updateTime":1558526212233},{"availableStock":0,"createTime":1558526212237,"id":186,"price":0,"productId":66,"skuIndex":"1_0_2","skuName":"黑色萝莉矜持","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"萝莉\",\"风格\":\"矜持\"}","updateTime":1558526212237},{"availableStock":0,"createTime":1558526212240,"id":187,"price":0,"productId":66,"skuIndex":"1_1_0","skuName":"黑色御姐闷骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"御姐\",\"风格\":\"闷骚\"}","updateTime":1558526212240},{"availableStock":0,"createTime":1558526212243,"id":188,"price":0,"productId":66,"skuIndex":"1_1_1","skuName":"黑色御姐明骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"御姐\",\"风格\":\"明骚\"}","updateTime":1558526212243},{"availableStock":0,"createTime":1558526212248,"id":189,"price":0,"productId":66,"skuIndex":"1_1_2","skuName":"黑色御姐矜持","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"御姐\",\"风格\":\"矜持\"}","updateTime":1558526212248},{"availableStock":0,"createTime":1558526212253,"id":190,"price":0,"productId":66,"skuIndex":"1_2_0","skuName":"黑色少妇闷骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"少妇\",\"风格\":\"闷骚\"}","updateTime":1558526212253},{"availableStock":0,"createTime":1558526212256,"id":191,"price":0,"productId":66,"skuIndex":"1_2_1","skuName":"黑色少妇明骚","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"少妇\",\"风格\":\"明骚\"}","updateTime":1558526212256},{"availableStock":0,"createTime":1558526212260,"id":192,"price":0,"productId":66,"skuIndex":"1_2_2","skuName":"黑色少妇矜持","skuProperties":"{\"肤色\":\"黑色\",\"年龄\":\"少妇\",\"风格\":\"矜持\"}","updateTime":1558526212260},{"availableStock":0,"createTime":1558526212264,"id":193,"price":0,"productId":66,"skuIndex":"2_0_0","skuName":"红色萝莉闷骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"萝莉\",\"风格\":\"闷骚\"}","updateTime":1558526212264},{"availableStock":0,"createTime":1558526212268,"id":194,"price":0,"productId":66,"skuIndex":"2_0_1","skuName":"红色萝莉明骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"萝莉\",\"风格\":\"明骚\"}","updateTime":1558526212268},{"availableStock":0,"createTime":1558526212271,"id":195,"price":0,"productId":66,"skuIndex":"2_0_2","skuName":"红色萝莉矜持","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"萝莉\",\"风格\":\"矜持\"}","updateTime":1558526212271},{"availableStock":0,"createTime":1558526212274,"id":196,"price":0,"productId":66,"skuIndex":"2_1_0","skuName":"红色御姐闷骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"御姐\",\"风格\":\"闷骚\"}","updateTime":1558526212274},{"availableStock":0,"createTime":1558526212277,"id":197,"price":0,"productId":66,"skuIndex":"2_1_1","skuName":"红色御姐明骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"御姐\",\"风格\":\"明骚\"}","updateTime":1558526212277},{"availableStock":0,"createTime":1558526212280,"id":198,"price":0,"productId":66,"skuIndex":"2_1_2","skuName":"红色御姐矜持","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"御姐\",\"风格\":\"矜持\"}","updateTime":1558526212280},{"availableStock":0,"createTime":1558526212285,"id":199,"price":0,"productId":66,"skuIndex":"2_2_0","skuName":"红色少妇闷骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"少妇\",\"风格\":\"闷骚\"}","updateTime":1558526212285},{"availableStock":0,"createTime":1558526212289,"id":200,"price":0,"productId":66,"skuIndex":"2_2_1","skuName":"红色少妇明骚","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"少妇\",\"风格\":\"明骚\"}","updateTime":1558526212289},{"availableStock":0,"createTime":1558526212292,"id":201,"price":0,"productId":66,"skuIndex":"2_2_2","skuName":"红色少妇矜持","skuProperties":"{\"肤色\":\"红色\",\"年龄\":\"少妇\",\"风格\":\"矜持\"}","updateTime":1558526212292}],
+            skuIndex: [],//存储选中的索引  肤色：0   年龄 1    skuIndex[0,1],
+            price: 0
         },
         methods: {
-            setIndex(index, val) {
-                this.indexs[index - 1] = val - 1;
+            handleSelect(skuIndex, index) {
+                //skuIndex是哪一个sku属性   确定skuIndex元素的下表
+                //index sku属性的哪一个值   确定元素的值
+                this.skuIndex[skuIndex - 1] = index - 1;
+                this.getPrice();
+            },
+            getPrice() {
+                let indexs = this.skuIndex.join("_");
+                this.skus.forEach(sku=>{
+                    if(sku.skuIndex==indexs){
+                        this.price = sku.price;
+                    }
+                })
+                //查库存
             }
         },
         mounted() {
-            this.skuDatas = $.parseJSON($("#skusDatas").html());
-        },
-        computed: {
-            sku() {
-                const index = Object.values(this.indexs).join("_");
-                return this.skuDatas.find(s=> s.indexs == index);
+            //默认都选中第一个选项
+            let skuCount = 3;
+            for (var i = 0; i < skuCount; i++) {
+                this.skuIndex.push(0);
             }
-
+            //初始化价格
+            this.getPrice()
         }
-    });
+    })
 </script>
 </body>
 
